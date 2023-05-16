@@ -3,7 +3,7 @@ import sys
 
 from nbformat import NO_CONVERT, read
 
-from tagger.model import load_model
+#from tagger.model import load_model
 
 
 def rmd(nb):
@@ -49,8 +49,9 @@ def get_text(notebook):
 
 
 def predict_tags(text):
-    model = load_model()
-    tags = model.predict(text)
+    #model = load_model()
+    #tags = model.predict(text)
+    tags = 'manual_add_tags_here'
     return tags
 
 
