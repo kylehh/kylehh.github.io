@@ -1,14 +1,13 @@
 ---
-title: TITLE
+title: Create python packages Part 1
 mathjax: true
 toc: true
 categories:
-  - category
+  - study
 tags:
   - python
 ---
 
-# Create Python packages Part 1
 This blog records my tests on how to create a Python package
 ## 1. Simplest demo of creating a python package
 Creating a python packages is not hard, but there may be some tricks and pitfall. 
