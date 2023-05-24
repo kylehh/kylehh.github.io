@@ -1,18 +1,15 @@
 ---
-title: TITLE
+title: argparse and Namespace
 mathjax: true
 toc: true
 categories:
-  - category
+  - study
 tags:
-  - python
+  - python 
 ---
 
-# argparse and Namespace
 Learn something really trival today, but kind of interesting and useful, which is related to argparse library
-
 We all use argparse for argument parsing. The standard usage is shown below:
-
 
 ```python
 import argparse
@@ -95,7 +92,8 @@ D2N({'batch_size': 5})
     Dict is converting to Namespace by method 2: 5
 
 
-Nice and neat!
+Nice and neat! Both methods have some interesting points:
+Method 1, use `**` to unpack the dictionary
+Method 2, use `__dict__`, which I know as little as `vars`. will check it out
 I know, it's sth really trivial. But I would forgot in 2 days so I decided to write it down. 
 
-Writing is my new hobby
