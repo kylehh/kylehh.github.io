@@ -3,7 +3,7 @@ title: Create python packages Part 1
 mathjax: true
 toc: true
 categories:
-  - study
+  - code
 tags:
   - python
 ---

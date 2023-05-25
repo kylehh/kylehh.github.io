@@ -3,7 +3,7 @@ title: argparse and Namespace
 mathjax: true
 toc: true
 categories:
-  - study
+  - code
 tags:
   - python 
 ---
