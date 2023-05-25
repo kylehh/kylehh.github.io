@@ -51,7 +51,7 @@ Oh, namespace. yes, the `args` is **Namespace** type variable, so you can direct
 But, what if the following program ask for a dict type as input, which is very common. Or in reverse, if I have a dict type, how can I convert it to a Namespace?  
 
 Let's solve them one by one:
-1. converting **Namespace** to **Dictionary**
+## 1. converting **Namespace** to **Dictionary**
 
 
 ```python
@@ -68,7 +68,7 @@ dummy_func(args)
 
 You see, very easy. Just use the magic of `vars()`... Actually I know very few about `vars`, will check out more later
 
-2. converting **Dictionary** to **Namespace**
+## 2. converting **Dictionary** to **Namespace**
 
 
 ```python
@@ -95,5 +95,6 @@ D2N({'batch_size': 5})
 Nice and neat! Both methods have some interesting points:
 Method 1, use `**` to unpack the dictionary
 Method 2, use `__dict__`, which I know as little as `vars`. will check it out
+
 I know, it's sth really trivial. But I would forgot in 2 days so I decided to write it down. 
 
