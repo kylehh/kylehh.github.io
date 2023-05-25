@@ -5,7 +5,11 @@
 https://docs.github.com/en/pages
 
 tips
+_jupyter/
 1. The jupyter file name has to use - instead of _ 
 2. and the format is YY-MM-DD-FILE-TITLE.ipynb
 3. run ./format.sh YY-MM-DD-FILE-TITLE.ipynb
-4. modify tag manually
+_posts/
+4. modify tag manually 
+5. To show image, copy to Powerpoint, then you can directly copy to Notebook
+6. After conversion, modify ![image.png](/assets/images/YY-MM-DD-FILE-TITLE_files/image.png)
