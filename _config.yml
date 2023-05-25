@@ -18,7 +18,7 @@ remote_theme: "mmistakes/minimal-mistakes@4.19.3"
 minimal_mistakes_skin: "default"
 minimal_mistakes_skin2: "dark"
 
-title: "Kyle Huang"
+title: "Kyle's Blog"
 subtitle: ""
 email: kyle@anyscale.com
 description: >- # this means to ignore newlines until "baseurl:"
@@ -69,9 +69,9 @@ plugins:
   - jekyll-seo-tag
 
 author:
-  name: "Kyle Huang"
+  name: "kYLe"
   avatar: "/assets/images/Photo.jpg"
-  bio: "kYLe"
+  bio: "I code for a living, which I enjoy"
   location: "Housotn, TX"
   links:
     - label: "Email"
