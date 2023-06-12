@@ -13,3 +13,5 @@ _posts/
 4. modify tag manually 
 5. To show image, copy to Powerpoint, then you can directly copy to Notebook
 6. After conversion, modify ![image.png](/assets/images/YY-MM-DD-FILE-TITLE_files/image.png)
+7. In VS code, directly paste image into it and choose 'copy as markdown images'. Then images will be saved in the md or jupyter folder
+8. Move the images into /assets/images/YY-MM-DD-FILE-TITLE_files folder and rename it. 
