@@ -1,5 +1,5 @@
 ---
-title: Building ll
+title: Building Slack Bot for LLM on AWS - Part 2
 mathjax: true
 toc: true
 categories:
