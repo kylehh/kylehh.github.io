@@ -1,5 +1,5 @@
 ---
-title: Create Workshop by Hugo
+title: Create Workshop by Hugo Part 1
 mathjax: true
 toc: true
 categories:
@@ -7,9 +7,9 @@ categories:
 tags:
   - frontend
 ---
-Workshop instructions by Hugo is a great tool. Easy to create, goodlooking template and look professional. I am so regret that my early workshops in AWS were not creat in this format and got lost. AWS later have an internal workshop tool called Workshop something, bascially it's a host for Hugo website.
+Workshop instructions by Hugo is a great tool. Easy to create, goodlooking template and look professional. I am so regretful that my early workshops in AWS were not creat in this format and got lost. AWS later have an internal workshop tool called Workshop something, bascially it's a host for Hugo website.
 
-Here is a quick intro to how to start creating workshop instructions by Hugo. Part one focuses on how to create the local website, and later park two will use S3 to host the static website.
+Here is a quick intro to how to start creating workshop instructions by Hugo. Part one focuses on how to create the local website, and later part two will use S3 to host the static website.
 
 ## Step 1, Hugo installation
 This is straightforward. Simply run `brew install hugo` to get the job done.
