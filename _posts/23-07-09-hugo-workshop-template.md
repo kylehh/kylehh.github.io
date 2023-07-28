@@ -14,9 +14,10 @@ This part will focus on how to host static webpage created by Hugo online, mainl
 Assume you already have a hugo website built in Part 1, something like the [tempalte](https://github.com/kylehh/workshop-template). Simly run `hugo` commend to build the web. It will generate building contens under the **public** folder. Of course, you can `rm -rf public` before building, since hugo will NOT remote the previous build. 
 
 ## Step 2, Upload to AWS
-Install AWS CLI and have AWS credential setup, now simply upload the whole **public** folder into AWS S3.
-`aws s3 cp --recursive public s3://bucketname/`  
-![Alt text](/assets/images/23-07-09-hugo-workshop-template_files/hugoserver.png)  
+Install AWS CLI and have AWS credential setup, now simply upload the whole **public** folder into AWS S3.  
+`aws s3 cp --recursive public s3://{bucketname}/`  
+Here is the example of copying files into `kyle-hugo-sandbox` bucket, which is publickly accessible. (see next step)
+![Alt text](/assets/images/23-07-09-hugo-workshop-template_files/s3bucket.png)  
 
 ## Step 3, AWS S3 Bucket configurations
 There are 3 sub-steps to configure the S3 bucket with contents from hugo **public** folder to host the static website. 
