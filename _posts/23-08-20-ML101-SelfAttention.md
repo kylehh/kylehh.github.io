@@ -1,5 +1,5 @@
 ---
-title: ML101 -3
+title: ML101 - Self Attention
 mathjax: true
 toc: true
 categories:
@@ -7,33 +7,10 @@ categories:
 tags:
   - ML
 ---
-Start with Regression vs Classification. and introduce softmax
-It seems there are long stories behind softmax, rather than normalization
-![Alt text](/assets/images/23-08-20-ML101-3_files/softmax.png)
-(Answer: Use Sigmoid for binary classification, which is equivalenet to Softmax in this case)
-## 1 Loss functions
-Cross-entropy is actually based on Maxi likelyhood method
-![Alt text](/assets/images/23-08-20-ML101-3_files/crossenropy.png)
 
-Cross-entropy surface is more smooth and not easy to be trapped by local min. 
-![Alt text](/assets/images/23-08-20-ML101-3_files/crossenropy-2.png)
 
-## 2 Batch Normalization
+## 1
 Feature normalization is important when different feature have different range. In general, it makes gradient descent converge faster.
-![Alt text](/assets/images/23-08-20-ML101-3_files/converge.png)
+![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/converge.png)
 
-Even if you have feature normalized, after first layer of networks, the output are no longer normalized. So we'd better normalize them again, with different sample data, in another word, with in a batch. That's where batch normaliztion applies.
-![Alt text](/assets/images/23-08-20-ML101-3_files/batnorm.png)
-
-
-During inferences, we don't always have a batch, and we can't simplily use the norm/var from the whole training data like feature norm, so the weight norm/var are the solution here.
-![Alt text](/assets/images/23-08-20-ML101-3_files/infer.png)
-
-
-Why batch norm helps?
-Internal Covariate shift doesn't NOT supported by data, even though sounds making sense. 
-![Alt text](/assets/images/23-08-20-ML101-3_files/whybatch.png)  
-
-The data and theoretical analysis is due to changng the landscape of error surface, but `somewhat serendipitous`.
-![Alt text](/assets/images/23-08-20-ML101-3_files/serendipitous.png)  
 
