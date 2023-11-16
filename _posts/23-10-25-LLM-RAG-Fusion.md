@@ -3,7 +3,7 @@ title: RAG Fusion
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - LLM
 ---

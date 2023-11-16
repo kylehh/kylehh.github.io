@@ -3,12 +3,12 @@ title: Distributing ML workload by Ray on Amazon SageMaker
 mathjax: true
 toc: true
 categories:
-  - cloud
+  - Application
 tags:
-  - aws
-  - anyscale
-  - ray
-  - sagemaker
+  - AWS
+  - Cloud
+  - Ray/Anyscale
+  - SageMaker
 ---
 
 Ray is an open-source framework that provides a simple and flexible way to build and scale distributed applications. It is designed to enable efficient and high-performance distributed computing across a cluster of machines. Even on a single instance machine, Ray can help you distribute computations across available CPU cores, resulting in faster execution and better resource utilization. 

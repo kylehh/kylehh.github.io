@@ -3,7 +3,7 @@ title: FireAct and LLM Datasets
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - LLM
 ---

@@ -3,7 +3,7 @@ title: AgentTuning and AgentInstruct
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - LLM
 ---

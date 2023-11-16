@@ -3,7 +3,7 @@ title: ML101 - Self Attention
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - ML
 ---

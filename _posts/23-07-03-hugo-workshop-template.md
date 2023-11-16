@@ -3,9 +3,9 @@ title: Create Workshop by Hugo Part 1
 mathjax: true
 toc: true
 categories:
-  - study
+  - Application
 tags:
-  - frontend
+  - Frontend
 ---
 Workshop instructions by Hugo is a great tool. Easy to create, goodlooking template and look professional. I am so regretful that my early workshops in AWS were not creat in this format and got lost. AWS later have an internal workshop tool called Workshop something, bascially it's a host for Hugo website.
 

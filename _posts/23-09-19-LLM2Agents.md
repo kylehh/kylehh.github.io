@@ -3,7 +3,7 @@ title: From LLM to Agents
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - LLM
 ---

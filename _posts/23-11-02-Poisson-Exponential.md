@@ -3,7 +3,7 @@ title: Poisson and Exponential Distribution
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - Math
 ---

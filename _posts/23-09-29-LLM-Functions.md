@@ -3,7 +3,7 @@ title: LLM functions
 mathjax: true
 toc: true
 categories:
-  - study
+  - Study
 tags:
   - LLM
 ---

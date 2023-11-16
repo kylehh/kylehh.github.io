@@ -3,9 +3,9 @@ title: Create python packages Part 1
 mathjax: true
 toc: true
 categories:
-  - code
+  - Code
 tags:
-  - python
+  - Python
 ---
 
 This blog records my tests on how to create a Python package

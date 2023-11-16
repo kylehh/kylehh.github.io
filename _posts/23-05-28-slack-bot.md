@@ -3,11 +3,11 @@ title: Building Slack Bot for LLM on AWS - Part 1
 mathjax: true
 toc: true
 categories:
-  - cloud
+  - Application
 tags:
-  - aws
-  - generativeai
-  - llm
+  - AWS
+  - LLM
+  - GenAI
 ---
 
 Kind of a hackathon/weekend project. Built a Slack bot running backend on Anyscale.

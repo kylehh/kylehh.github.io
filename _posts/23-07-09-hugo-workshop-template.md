@@ -3,9 +3,9 @@ title: Create Workshop by Hugo Part 2
 mathjax: true
 toc: true
 categories:
-  - study
+  - Application
 tags:
-  - frontend
+  - Frontend
 ---
 
 This part will focus on how to host static webpage created by Hugo online, mainly leverage online cloud services like AWS S3.

@@ -3,9 +3,9 @@ title: argparse and Namespace
 mathjax: true
 toc: true
 categories:
-  - code
+  - Code
 tags:
-  - python 
+  - Python 
 ---
 
 Learn something really trival today, but kind of interesting and useful, which is related to argparse library

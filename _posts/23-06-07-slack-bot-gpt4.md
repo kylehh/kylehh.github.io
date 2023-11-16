@@ -3,11 +3,11 @@ title: Building Slack Bot for LLM on AWS - Part 2
 mathjax: true
 toc: true
 categories:
-  - cloud
+  - Application
 tags:
-  - aws
-  - generativeai
-  - llm
+  - AWS
+  - GenAI
+  - LLM
 ---
 
 "How to create Slack bot which interact with AWS Lambda"  
