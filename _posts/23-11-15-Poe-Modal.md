@@ -3,7 +3,7 @@ title: Poe and Modal
 mathjax: true
 toc: true
 categories:
-  - application
+  - Application
 tags:
   - LLM
 ---

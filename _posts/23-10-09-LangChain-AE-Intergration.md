@@ -3,7 +3,7 @@ title: Anyscale Endpoint Integration - LangChain
 mathjax: true
 toc: true
 categories:
-  - Applications
+  - Application
 tags:
   - LLM
 ---
