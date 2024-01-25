@@ -1,0 +1,21 @@
+---
+title: Workshops and Buildouts 
+mathjax: true
+toc: true
+categories:
+  - Application
+tags:
+  - Cloud
+---
+
+One interesting part of my job is to create workshops and buildouts (one type of workshop focus on AWS building). Here are some pictures of my previous works
+
+1. Anyscale LLM workshop
+![Alt text](/assets/images/24-01-24-Buildouts_files/anyscale.png)
+
+2. Media Replay Engine(MRE) 
+![Alt text](/assets/images/24-01-24-Buildouts_files/MRE_system.png)
+![Alt text](/assets/images/24-01-24-Buildouts_files/MRE_content.png)
+
+3. Windmill IoT architecture
+![Alt text](/assets/images/24-01-24-Buildouts_files/windmill_architecture.png)
