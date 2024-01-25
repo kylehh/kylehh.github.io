@@ -1,5 +1,5 @@
 ---
-title: CORS setup on AWS APIGateway
+title: Tetrics
 mathjax: true
 toc: true
 categories:
