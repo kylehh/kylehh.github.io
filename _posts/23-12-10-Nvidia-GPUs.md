@@ -14,8 +14,9 @@ Now it's a chance to quickly go over them
 
 | GPU Name | Memory | EC2 |Architecture | Year|
 |----------|--------|--|------------|-----|
-|T4 | 16G | g4|Tesla ||
-|A10 | 24G | g5||
-|A100 | 40Gx8|p4d.24x|||
-|A100 | 80Gx8|p4de.24x||
-|L4 | 24G | g6||
+|T4 | 16G | g4|Turing |2018|
+|A10 | 24G | g5|Ampere|2021|
+|A100 | 40Gx8| p4d.24x|Ampere|2020|
+|A100 | 80Gx8| p4de.24x|Ampere|2020|
+|H100| 80Gx8| p5.48x|Hopper|2022|
+|L4 | 24G | g6|Ada Lovelace|2023|
