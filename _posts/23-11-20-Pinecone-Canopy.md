@@ -26,7 +26,7 @@ Unit and system tests were added for Canopy, which is a good practice.
 ## 3. `flake8` and `mypy`  
 [flake8](https://flake8.pycqa.org/en/latest/) is stype guide enforcement and [mypy](https://mypy.readthedocs.io/en/stable/#) is a static type checker for Python.  
 I tried with `black` first and it solves most of the format issues. except for lines being too long. It can be solved with proper `flake8` configs.
-## 4. `peotry`  
+## 4. `poetry`  
 [poetry](https://python-poetry.org/docs/) is  a tool for dependency management and packaging in Python.  
 I didn't get proper `flake8` configs due to installations. Then it solves by `poetry install .` and `peotry run`
 

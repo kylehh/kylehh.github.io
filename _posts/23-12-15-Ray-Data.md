@@ -50,7 +50,7 @@ def generate_embedding(doc_batch):
     doc_batch["embeddings"] = [resp.data[i].embedding for i,_ in enumerate(doc_batch["doc"])]    
     return doc_batch
 ```
-When you call `map_batch`, the `doc_batch` input to the embedding function, is same as the output of `ds.take_batch(5)`, because we set `batch_size` to 5.   
+When you call **map_batch**, the `doc_batch` input to the embedding function, is same as the output of `ds.take_batch(5)`, because we set `batch_size` to 5.   
 ```python
 ds_out = ds.map_batches(generate_embedding, batch_size=5)
 # generate_embedding will get input as 
@@ -59,7 +59,7 @@ ds_out = ds.map_batches(generate_embedding, batch_size=5)
 ```
 And when you write output, you should also write a new key 'embeddings' with List value, lising all 5 embedding arrays. Then you can use `show` or `take_batch` to see the contents of `ds_out`.
 
-You can use `map` call as well, so instead of sending in a batch of items, it will send in one item at a time, so it's like the output `show`. So you need to modify function as below
+You can use **map** call as well, so instead of sending in a batch of items, it will send in one item at a time, so it's like the output `show`. So you need to modify function as below
 ```python
 def generate_embedding(doc_single_row):
     ...
@@ -72,7 +72,7 @@ def generate_embedding(doc_single_row):
     ...
 ```
 
-Last concept is flat map, which is same as map to process one row at a time, but flat the results.
+Last concept is **flat_map**, which is same as **map** to process one row at a time, but flat the results.
 
 ```python
 def generate_embedding(doc_single_row):
