@@ -71,6 +71,20 @@ def generate_embedding(doc_single_row):
     )
     ...
 ```
+`map` **have to** return a dic, and value could be a list , but list of dics are NOT allowed
+```python
+def duplicate_row(row):
+    ## This gives error
+    # return {'key':['value':row['id']]}
+    return {'key':[row['id'],row['id']]}
+print(
+    ray.data.range(3)
+    .map(duplicate_row)
+    .take_all()
+)
+##print results
+##[{'key': [0, 0]}, {'key': [1, 1]}, {'key': [2, 2]}]
+```
 
 Last concept is **flat_map**, which is same as **map** to process one row at a time, but flat the results.
 
@@ -83,6 +97,19 @@ def generate_embedding(doc_single_row):
     # You can also try following code to see how exactly flat wors
     #return [doc_batch] * 2
 ```
-
+`flat_map` has to return **a list of dics w same keys**(or consider it as a list of `map` output)
+```python
+def duplicate_row(row):
+    ## error if keys are different
+    # return [{'key1':row['id']},{'key2':row['id']}]
+    return [{'key':row['id']},{'key':row['id']}]
+print(
+    ray.data.range(3)
+    .flat_map(duplicate_row)
+    .take_all()
+)
+##print results
+##[{'key': 0}, {'key': 0}, {'key': 1}, {'key': 1}, {'key': 2}, {'key': 2}]
+```
 ## 3. batch size and some other parameters
 *bath_size* controls the size of the batch, which is the most significant parameter.
