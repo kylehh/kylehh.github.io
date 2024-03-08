@@ -54,5 +54,16 @@ Evaluation
 ![Alt text](/assets/images/23-09-19-LLM2Agents_files/tot_evaluationB.png)
 Search can be done by BFS or DFS
 
-
 ![Alt text](/assets/images/23-09-19-LLM2Agents_files/tot_summary.png)
+
+Here is a simple promping solution with ToT, and here is the prompt
+```
+Imagine three different experts are answering this question.
+All experts will write down 1 step of their thinking,
+then share it with the group.
+Then all experts will go on to the next step, etc.
+If any expert realises they're wrong at any point then they leave.
+The question is...
+```  
+![Alt text](/assets/images/23-09-19-LLM2Agents_files/tot_prompt.png)
+
