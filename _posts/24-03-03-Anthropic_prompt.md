@@ -115,4 +115,3 @@ In function calling, **we substitute function results into prompts**. Claude can
   </tool_description>
 </tools>
 ```
- 
