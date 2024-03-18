@@ -1,31 +1,35 @@
 ---
-title: CORS setup on AWS APIGateway
+title: Theorema Egregium
 mathjax: true
 toc: true
 categories:
-  - Application
+  - Study
 tags:
-  - Cloud
+  - Math
 ---
 
-It has been also two month sicne my last update. There is no execuse, but I do want to claim that I have been out of home fro Aug 1st to 22nd, and got totally swampped after that for some LLM related work before Ray Summit. 
+Gauss's Theorema Egregium, which is Latin for "Remarkable Theorem", is a major result of differential geometry.
+I found a good introduction [here](https://blog.sciencenet.cn/blog-677221-818928.html)
+and [video](https://www.youtube.com/watch?v=mh_gjwSXTVg) by Yongle Li.
 
-Building a demo was one of them, and while working with AWS API Gateway, I met CORS authentication issue AGAIN
+# 0 Intricint Geometry
+The study is about intrinsic geometry. The length of an arch is one example, not changed by **curvature** or **torsion**.
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/intrinsicgeometry.png)
 
-No surprise, CORS was one of the most common problem when you set up API gateway for endpoints. and this time I am recording what's the proper way to solve it
+# 1 Review of Curvatures
+curvature $\rho$ is the reciprocal of the radius of curvature $K$ 
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/curvature.png)
 
-## 1, Enable CORS in API Gateway
-This is the most obvious step to do, and just follow instructions on the console and use default options.An `OPTION` method will be added as `MOCK` integration type  
-![Alt text](/assets/images/23-09-15-CORS_files/console.png)
+There are two principle curvatures, the min and max of all curvs. Defined by Euler in 1760. 
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/principlecurv.png)
 
-## 2 Add modify the API resources
-Now you need to modify `Integration reqeust` and `Integration response` for the `OPTION` method. I believe this is the key step to make CORS work. Some posts say you also need to modify `Header mappings`, and I also did, but Im not sure if it's necessary.  
-![Alt text](/assets/images/23-09-15-CORS_files/integration.png)
+# 2 Gaussian Curvature 
+The mean curvature is the mean of principle curvatures, and the gaussian is the multiplication. It's intrinsic for a **surface**
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/gtg.png)
 
-Even though Im not fully understand the 4 steps here, especially the differences between Method vs Integration, the `Mapping templates` need to be filled with proper json responses. 
-- for `Integration reqeust` , add `{"statusCode" : 200}`
-- for `Integration response` , add `{"statusCode" : 200, "message": "Go ahead without me"}`  
+The original defination is the ratio of the area of two surfaces.
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/gausscurv.png)
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/gausscurv2.png) 
 
-![Alt text](/assets/images/23-09-15-CORS_files/mappingtemplates.png)
-## 3 Test CORS
-[https://test-cors.org](https://test-cors.org/) is a simple website to test out your CORS setups. Using `POST` method and you are espected to see status 200.
+Theorema Egregium gives birth to intrinsic geometry.
+![Alt text](/assets/images/24-03-16-Theorema-Egregium_files/tg.png) 
