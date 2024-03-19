@@ -29,8 +29,9 @@ First get Query and Key matrix
 Get **Attention scores** by multiply Q and V
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/attentionscore.png)
 
-Adding Softwax, and normalization (NOT shown in picture). Can replaced by ReLU.
+Adding Softwax(Can replaced by ReLU.), and normalization. A masked version could be used here to achieve causality. 
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/softmax.png)
+![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/masked.png) 
 
 Use attention scores as weights, and the output the weighted sum on V matrix
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/v.png)
@@ -38,13 +39,14 @@ Use attention scores as weights, and the output the weighted sum on V matrix
 Matrix view of the steps above.Q/K/V matrix are the paramters to be learnt. 
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/matrix.png)
 
+Single head limits the ability of self-attention to focus on multiple positions within the sequence—the probability distribution can easily be dominated by one (or a few) words.
 Now let's expand it to multi-head attention. Use the previous results as $b^{i,1}$
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/multihead.png)
 
 And use another set of matrix to get $b^{i,2}$
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/multihead2.png)
 
-Concatentate multi head results and times a matrix to get the final output $b^i$
+Concatentate multi head results and times a matrix to get the final output $b^i$. Because each attention head outputs token vectors of dimension $d // H$, the concatenated output of all attention heads has dimension $d$
 ![Alt text](/assets/images/23-08-20-ML101-SelfAttention_files/concat.png)
 
 Adding position vector created by positial encoding. $sin$ encoding is hand crafted, and can be learnt as well.   
