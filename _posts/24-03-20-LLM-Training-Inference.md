@@ -29,7 +29,7 @@ This is from Cohere's [docs](https://docs.cohere.com/docs/controlling-generation
 
 ## 3 Weight Tying
 A new concept is introduced here for training. Some steps can share neural network weights. 
-But `wte` and `lm_head` they are transposed, how can their weight directly be euqal???
+But `wte` and `lm_head` they are transposed, how can their weight directly be euqal???  
 ![Alt text](/assets/images/24-03-20-LLM-Training-Inference_files/weighttying.png)
 
 ## 4 Pretraining  
@@ -37,8 +37,8 @@ Next token prediction underlies all LLM models pretraining and inference. I will
 
 The next token is predicted by passing a token’s output vector as input to a linear layer, which outputs a vector with the same size as our vocabulary. The **blue** vector will predict the last **pink** vector, and model will be trained to maximize the prob. of the correct token. 
 
-**Predicting tokens across a sequence.** We perform next token prediction for EVERY token in a sequence and aggregate the loss over them all.
-![Alt text](/assets/images/24-03-20-LLM-Training-Inference_files/pretrain.png)
+**Predicting tokens across a sequence.** We perform next token prediction for EVERY token in a sequence and aggregate the loss over them all.  
+![Alt text](/assets/images/24-03-20-LLM-Training-Inference_files/pretraining.png)
 
 
 
