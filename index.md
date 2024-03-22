@@ -13,10 +13,8 @@ I blogged on WeChat these days, mostly posting pictures, and recording my random
 
 Actually I didn't know what's the purpose of having another blog-ish thing, till one day I found that it can be used to record my learnings.
 
-I read Lilian's blog so many times about stable diffsion, watched Hongyi Lee's lecture on youtube so many times about various topics of ML
+I read Lilian's blog about Stable Diffusion, watched Hungyi Lee's lectures on youtube about various topics of ML
 
-But I easily lost track of what I learnt after some time. So I decided to record them down, so easy for me to review and learn better
+But I easily lost track of what I learnt after some time, so I decided to record them down, which is easy for me to review and learn better
  
-so here I am!
-
 Feel free to check out my [posts](https://kylehh.github.io/posts/)
