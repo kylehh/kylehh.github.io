@@ -8,20 +8,20 @@ tags:
   - LLM
 ---
 
+## 1 MoE
+In the context of LLMs, MoEs make a simple modification to this architecture: we replace the feed-forward sub-layer with an MoE layer!
+![Alt text](/assets/images/2024/24-03-22-MoE-Code_files/moe.png)
 
+Two primary components:
 
-## 1 Enable CORS in API Gateway
-This is the most obvious step to do, and just follow instructions on the console and use default options.An `OPTION` method will be added as `MOCK` integration type  
-![Alt text](/assets/images/24-03-22-MoE-Code_files/console.png)
+- **Sparse** MoE Layer: replaces dense feed-forward layers in the transformer with a sparse layer of several, similarly-structured “experts”.
 
-## 2 Add modify the API resources
-Now you need to modify `Integration reqeust` and `Integration response` for the `OPTION` method. I believe this is the key step to make CORS work. Some posts say you also need to modify `Header mappings`, and I also did, but Im not sure if it's necessary.  
-![Alt text](/assets/images/23-09-15-CORS_files/integration.png)
+- Router: determines which tokens in the MoE layer are sent to which experts.
 
-Even though Im not fully understand the 4 steps here, especially the differences between Method vs Integration, the `Mapping templates` need to be filled with proper json responses. 
-- for `Integration reqeust` , add `{"statusCode" : 200}`
-- for `Integration response` , add `{"statusCode" : 200, "message": "Go ahead without me"}`  
+We impose sparsity by only sending a token to its top-K experts. For example, many models set k=1 or k=2, meaning that each token is processed by either one or two experts, respectively.
 
-![Alt text](/assets/images/23-09-15-CORS_files/mappingtemplates.png)
-## 3 Test CORS
-[https://test-cors.org](https://test-cors.org/) is a simple website to test out your CORS setups. Using `POST` method and you are espected to see status 200.
+## 2 Mixtral-8x7B MoE
+7B Mistral-7B LLM, replace each of its FFSL with MoE layer with **EIGHT** experts, where **TWO** experts are activated for each token.
+
+In total, 47B parameters  
+Inference cost, 14B parameters. 
