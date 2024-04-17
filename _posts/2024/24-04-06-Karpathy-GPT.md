@@ -131,5 +131,22 @@ wei = torch.zeros((T,T))
 wei = wei.masked_fill(tril == 0, float('-inf'))
 wei = F.softmax(wei, dim=-1) #row dir.
 xbow3 = wei @ x
-torch.allclose(xbow, xbow3)
+torch.allclose(xbow, xbow3) #True
+```
+
+## 4 Adding position embedding
+But this time position embedding is same for every token, so it won't help. and we also added a layer before the last logits, so the channel value is changed to `n_embed` now and a `head` layer will map from `n_embed` to `vacab_size`
+```python
+self.token_embedding_table = nn.Embedding(vocab_size, n_embd)
+self.position_embedding_table = nn.Embedding(block_size, n_embd)
+self.lm_head = nn.Linear(n_embd, vocab_size)
+
+def forward(self, idx, targets=None):
+    B, T = idx.shape
+    # idx and targets are both (B,T) 
+    tok_emb = self.token_embedding_table(idx) # (B,T,C)
+    pos_emb = self.position_embedding_table(torch.arange(T, device=device)) # (T,C)
+    x = tok_emb + pos_emb # (B,T,C)
+    logits = self.lm_head(x) # (B,T,vocab_size)
+
 ```
