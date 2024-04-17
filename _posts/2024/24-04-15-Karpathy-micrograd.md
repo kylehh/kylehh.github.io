@@ -184,13 +184,15 @@ ypred = [n(x) for x in xs]
 loss = sum((yout - ygt)**2 for ygt, yout in zip(ys, ypred))
 
 loss.backward()
-```
+```  
+
 - GD updates  
 ```python
 #Just update the data by NEGATIVE learning rate x grad. 
 for p in n.parameters():
   p.data += -0.1 * p.grad
-```
+```  
+
 - A common BUG!
 Item 3 here!
 ![Alt text](/assets/images/2024/24-04-15-Karpathy-micrograd_files/bug.png)
