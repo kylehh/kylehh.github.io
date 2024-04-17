@@ -177,7 +177,8 @@ def parameters(self):
 ```
 
 - Find the loss and backprop to get all the grads  
-```python
+
+```python  
 # Get the predictions
 ypred = [n(x) for x in xs]
 # Square root loss
@@ -187,13 +188,14 @@ loss.backward()
 ```  
 
 - GD updates  
-```python
+```python  
 #Just update the data by NEGATIVE learning rate x grad. 
 for p in n.parameters():
   p.data += -0.1 * p.grad
 ```  
 
 - A common BUG!
+
 Item 3 here!
 ![Alt text](/assets/images/2024/24-04-15-Karpathy-micrograd_files/bug.png)
 ```python
