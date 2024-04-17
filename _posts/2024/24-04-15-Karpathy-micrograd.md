@@ -147,8 +147,8 @@ class Layer:
     return outs[0] if len(outs) == 1 else outs
 ```
 - MLP  
-```python
 
+```python
 class MLP:
   
   def __init__(self, nin, nouts):
@@ -162,9 +162,8 @@ class MLP:
       x = layer(x)
     return x
 ```
-
 ## 6 Gradient Desceond Updates
-- find all the parameters from neurons
+- find all the parameters from neurons  
 ```python
 # Only W and B in Neuron
 def parameters(self):
@@ -177,7 +176,7 @@ def parameters(self):
   return [p for layer in self.layers for p in layer.parameters()]
 ```
 
-- Find the loss and backprop to get all the grads
+- Find the loss and backprop to get all the grads  
 ```python
 # Get the predictions
 ypred = [n(x) for x in xs]
@@ -186,13 +185,12 @@ loss = sum((yout - ygt)**2 for ygt, yout in zip(ys, ypred))
 
 loss.backward()
 ```
-- GD updates
+- GD updates  
 ```python
 #Just update the data by NEGATIVE learning rate x grad. 
 for p in n.parameters():
   p.data += -0.1 * p.grad
 ```
-
 - A common BUG!
 Item 3 here!
 ![Alt text](/assets/images/2024/24-04-15-Karpathy-micrograd_files/bug.png)
