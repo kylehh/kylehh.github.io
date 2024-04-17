@@ -111,7 +111,9 @@ def backward(self):
   for node in reversed(topo):
     node._backward()
 ```
+
 ## 4 Pytorch implementation
+
 ```python
 # Python by default uses Double
 x1 = torch.Tensor([2.0]).double()                
@@ -121,6 +123,7 @@ x1.requires_grad = True
 # Get the value by call .item()
 print('x1', x1.grad.item())
 ```
+
 ## 5 NN implementation
 - Neron
 ```python
@@ -143,7 +146,7 @@ class Layer:
     outs = [n(x) for n in self.neurons]
     return outs[0] if len(outs) == 1 else outs
 ```
-- MLP
+- MLP  
 ```python
 
 class MLP:
