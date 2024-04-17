@@ -9,7 +9,7 @@ tags:
 ---
 
 2.5 hr video of [micrgrad](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=1).
-I wish I could watch this video 5 yrs earlier! 
+I wish I could've watched this video 5 yrs earlier! It clears out so many questions about `loss.backward()`! 
 
 ## 1 Some Python notes
 I actually learn quite some about Python operations here :)
