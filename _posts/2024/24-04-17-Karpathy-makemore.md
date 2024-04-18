@@ -3,9 +3,9 @@ title: Andrej Karpathy-MakeMore
 mathjax: true
 toc: true
 categories:
-  - Application
+  - Study
 tags:
-  - Cloud
+  - LLM
 ---
 
 2.5 hr video of [MakeMore](https://www.youtube.com/watch?v=PaCmpygFfXo&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=2).
