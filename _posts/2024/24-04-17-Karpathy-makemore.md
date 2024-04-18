@@ -1,5 +1,5 @@
 ---
-title: Andrej Karpathy-Makemore
+title: Andrej Karpathy-MakeMore
 mathjax: true
 toc: true
 categories:
@@ -8,7 +8,7 @@ tags:
   - Cloud
 ---
 
-2.5 hr video of [micrgrad](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=1).
+2.5 hr video of [MakeMore](https://www.youtube.com/watch?v=PaCmpygFfXo&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&index=2).
 
 ## 1. Python tricks
 - Counter with dict without if/else  
@@ -46,7 +46,8 @@ tags:
       for j in range(dim):
           plt.text(j, i, 'strb', ha="center", va="bottom", color='gray')
           plt.text(j, i, 'strt', ha="center", va="top", color='gray')
-  ``` 
+  ```   
+
 ## 2 Neural Network Setups
 - Maximum Likehood Estimation
 
@@ -62,11 +63,34 @@ tags:
       log_likelihood += logprob
   nll = -log_likehood
   ```  
-- One hot encodeing  
+- One hot encoding  
   Convert `one_hot` to `float()`!  
   ![Alt text](/assets/images/2024/24-04-17-Karpathy-makemore_files/oneshot.png)
 
-- adfadf
+- logits and softmax
+  ```python
+  # 5x27 @ 27x27 -> 5x27
+  logits = xenc @ W # Interpreate as log-counts
+  counts = logits.exp() # counts table, equivalent N
+  probs = counts / counts.sum(1, keepdims=True) #normalized counts table
+  ## the last 2 lines are actually softmax :)
+  ```
+- loss and weight update  
+  This is similar to MicroGrad  
+  ```python
+  # retrieve 5 prob values from probs table
+  loss = -probs[torch.arange(5), ys].log().mean()
+  # backward pass
+  # W = torch.randn((27, 27), generator=g, requires_grad=True) # set True for required_grad
+  # W.grad.shape == W.shape
+  W.grad = None # set to zero the gradient
+  
+  loss.backward() # cals all the W.grad
+  # update weights
+  W.data += -0.1 * W.grad
+  ```
 
-
-
+## 3 Notes
+- The weights $W$ eventually will converge to the log counts table $N$ b/c no more information we get from the NN rather than counts
+- Adding the counts `P = (N+1).float()` would leads to smooth of the distribution. 
+- Add regularization term `0.01 * w**2.mean()`
