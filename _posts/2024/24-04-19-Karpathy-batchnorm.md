@@ -7,10 +7,8 @@ categories:
 tags:
   - LLM
 ---
-
-It's based on Bengio's paper on MLP, [A Neural Probabilistic Language Model](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf) in 2003. 
-
-![Alt text](/assets/images/2024/24-04-19-Karpathy-batchnorm_files/mlp.png) 
+This part goes deep into some training tricks.
+Very insightful!
 
 ## 1 Fixing issues  
 - Fixing the inital loss   
@@ -38,7 +36,7 @@ It's based on Bengio's paper on MLP, [A Neural Probabilistic Language Model](htt
 
 - Kaiming Init  
   The weight would change the std of input x. To keep std to be 1 at each layer, we can let   
-  $w /= (fan\_in)^{const}$  
+  $w *= 1/(fan\_in)^{const}$  
   This is from Kaiming's [paper](https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf) and implemented in torch as `torch::nn::init::kaiming_normal_`
   with a constant depends on the activiation function. 
   ![Alt text](/assets/images/2024/24-04-19-Karpathy-batchnorm_files/kaiming.png) 
@@ -86,5 +84,9 @@ Google published Batch norm [paper](https://arxiv.org/pdf/1502.03167.pdf). Both 
 
 - Couple of points
   - Add $\epsilon$ to avoid div by zero
-  - The bias before BN is wasteful, so can be deleted. 
-  - be added after multi 
+  - The bias before BN is wasteful, so should be removed. 
+  - The **momentum** for BN is the 0.001 for `bnmean/std_running`, and **track_runing_stats** is the flag for it in PyTorch
+  - **affine** flag is for bngain/bias,which is trainable
+  - GroupNorm and LayerNorm are more commonly used nowadays.
+  - Need to carefully select initial weight, like Kaiming init with 5/3 scaler, without BatchNorm.
+  - BatchNorm makes the initialization much less sensative.
