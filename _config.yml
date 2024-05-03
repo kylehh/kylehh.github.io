@@ -20,7 +20,7 @@ minimal_mistakes_skin2: "dark"
 
 title: "Kyle's Blog"
 subtitle: ""
-email: kyle@anyscale.com
+#email: 
 description: >- # this means to ignore newlines until "baseurl:"
   Hey there! My name is Kyle
 words_per_minute: 200
@@ -76,7 +76,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope"
-      url: "mailto:kyle@anyscale.com"
+      url: "mailto:kylhuang@nvidia.com"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/kylehh"
