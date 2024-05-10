@@ -31,10 +31,12 @@ and can be rewrtie as following
 ## 2 Exponential Moving Average
 Simply Moving Average is unweighted mean of the previous K data point in finance, or take equal number of data on either side of a central value in engineer and science. 
 
-Exponential Moving Average is weighted mean with a parameter $\alpha$. For new value $p_t$ at time $t$, we have   
-$EMA_t = \alpha * p_t + (1-\alpha)*EMA_{t-1}$  
-Plug in $EMA_{t-1}$ and so on, you will get
-$EMA_t = \alpha * (p_t + (1-\alpha)*p_{t-1}+(1-\alpha)^2p_{t-2}+(1-\alpha)^3p_{t-3}+...)$ 
+Exponential Moving Average is weighted mean with a parameter $\alpha$. For new value $p_t$ at time $t$, we have     
+$$EMA_t = \alpha * p_t + (1-\alpha)*EMA_{t-1}$$  
+
+Plug in $EMA_{t-1}$ and so on, you will get  
+$$EMA_t = \alpha * (p_t + (1-\alpha)*p_{t-1}+(1-\alpha)^2p_{t-2}+(1-\alpha)^3p_{t-3}+...)$$ 
+
 Here is the figure of EMA weights
 ![Alt text](/assets/images/2024/24-03-31-Legendre-HiPPO_files/ema.png)  
 
