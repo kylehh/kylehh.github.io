@@ -14,7 +14,7 @@ Would be the natural progression after you arrive at the fact taking three steps
 That's a good explanation of the intuition behind speculative decoding.
 ## 1  Speculative Sampling and Speculative Decoding
 
-[DeepMind]() and [Google]() published two paper around the same time regarding this algorithm. 
+[DeepMind](https://arxiv.org/pdf/2302.01318) and [Google](https://proceedings.mlr.press/v202/leviathan23a/leviathan23a.pdf) published two paper around the same time regarding this algorithm. 
 
 Define notations as follow:  
 $M_p$ = draft model (llama-7b)  
