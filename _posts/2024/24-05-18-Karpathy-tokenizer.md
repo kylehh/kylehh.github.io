@@ -76,7 +76,9 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
     return newids
   ```  
 3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.
+
   ```python
+  # Remove 256 original chars
   num_merges = vocab_size - 256
 
   # input text preprocessing
