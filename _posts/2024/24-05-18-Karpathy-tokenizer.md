@@ -99,6 +99,7 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
       # save the merge
       merges[pair] = idx
       vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
+
   ```  
 4. Decode and Encode  
 Decode may not work for every bytes, so `error="replace"` will catch the fell through bytes
@@ -170,7 +171,7 @@ The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoke
   # ^---- ~equivalent to our "merges" (char, char)->new_idx
   ## bpe_merges[10000]=(' exper', 'iments')
   ```  
-4. Special tokens
+4. Special tokens  
 There is ONE special token in GPT-2
   ```python
   len(bpe_merges) == 5000
