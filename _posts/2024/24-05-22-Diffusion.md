@@ -40,10 +40,11 @@ weight parameter is replaced by a univariate function parametrized as a spline.
   - subtitle
     ```python
     code
-    ```  
+    ```
   - subtitles
     ```python
     code
     ```  
+
 ## 2 anohter section
 

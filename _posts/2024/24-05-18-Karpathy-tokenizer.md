@@ -130,6 +130,7 @@ Encoding needs to find the pair with the lowest merge index
           ids = merge(ids, pair, idx)
       return ids
   ```  
+
 ## 2 OpenAI Implementations
 1. GPT-2 splitter
 Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015060c964af2c3da4cf7c8ab/src/encoder.py#L53)
@@ -144,6 +145,7 @@ Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015
 2. tiktoken  
 The recommended library for tokenization.
 The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
+
   ```python
   import tiktoken
   # GPT-2 (does not merge spaces)
@@ -157,7 +159,7 @@ The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoke
   ## [256, 22691, 4435, 12340]
   ```  
 3. Artifacts  
-[encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe)
+[encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe) are downloaded from openai.
   ```python
 
   with open('encoder.json', 'r') as f:
@@ -189,6 +191,7 @@ and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org
       ENDOFPROMPT: 100276,
     }
   ```  
+
 ## 3 Sentencepiece
 This is from Google used by Llama and Mixtral.  
 OpenAI's **tiktoken** encodes to utf-8 and then BPEs bytes. **sentencepiece** BPEs the code points and optionally falls back to utf-8 bytes for rare code points (rarity is determined by character_coverage hyperparameter), which then get translated to byte tokens.  
