@@ -33,7 +33,7 @@ If raw byte sequences can be directly feed into LLM, it would be great improvmen
 
 ## 1. BPE(Byte Pair Encoding)
 The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is simple and clear. Repetitively replacing "byte pairs" with new code, so dictionary with new byte pairs keep growing and the encoding length keep decreasing.
-1. Given a list of integers, return a dictionary of counts of consecutive pairs
+1. Given a list of integers, return a dictionary of counts of consecutive pairs.
   ```python
   #characters to bytes
   utf8 = "test".encode("utf-8")
@@ -57,8 +57,7 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
   chr(top_pair[0])
   ```  
 
-2. In the list of integers (ids), replace all consecutive occurrences
-    of pair with the new integer token idx
+2. In the list of integers (ids), replace all consecutive occurrences of pair with the new integer token idx.
   ```python
   def merge(ids, pair, idx):
     """
@@ -76,7 +75,7 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
             i += 1
     return newids
   ```  
-3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.  
+3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.
   ```python
   num_merges = vocab_size - 256
 
@@ -98,7 +97,7 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
       # save the merge
       merges[pair] = idx
       vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
-  ```
+  ```  
 4. Decode and Encode  
 Decode may not work for every bytes, so `error="replace"` will catch the fell through bytes
   ```python
@@ -107,7 +106,7 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
     text_bytes = b"".join(self.vocab[idx] for idx in ids)
     text = text_bytes.decode("utf-8", errors="replace")
     return text
-  ```
+  ```  
 Encoding needs to find the pair with the lowest merge index
   ```python
   def encode(self, text):
@@ -127,7 +126,7 @@ Encoding needs to find the pair with the lowest merge index
           idx = self.merges[pair]
           ids = merge(ids, pair, idx)
       return ids
-  ```
+  ```  
 ## 2 OpenAI Implementations
 1. GPT-2 splitter
 Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015060c964af2c3da4cf7c8ab/src/encoder.py#L53)
@@ -138,7 +137,7 @@ Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015
   gpt2pat = re.compile(r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""")
   print(re.findall(gpt2pad, "Hello's World123  !!  "))
   ##['Hello', "'s", ' World', '123', ' ', ' !!', '  ']
-  ```
+  ```  
 2. tiktoken  
 The recommended library for tokenization.
 The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
@@ -153,7 +152,7 @@ The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoke
   enc = tiktoken.get_encoding("cl100k_base")
   print(enc.encode("   Hello World!!!"))
   ## [256, 22691, 4435, 12340]
-  ```
+  ```  
 3. Artifacts  
 [encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe)
   ```python
@@ -168,7 +167,7 @@ The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoke
   bpe_merges = [tuple(merge_str.split()) for merge_str in bpe_data.split('\n')[1:-1]]
   # ^---- ~equivalent to our "merges" (char, char)->new_idx
   ## bpe_merges[10000]=(' exper', 'iments')
-  ```
+  ```  
 4. Special tokens
 There is ONE special token in GPT-2
   ```python
@@ -176,7 +175,7 @@ There is ONE special token in GPT-2
   # 256 raw byte tokens. 50,000 merges. +1 special token
   len(encoder) == 50257
   encoder['<|endoftext|>'] == 50256
-  ```
+  ```  
 and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org/pdf/2207.14255) related. (Fill in the Middle, to be learned )  
   ```python
     special_tokens = {
@@ -186,11 +185,10 @@ and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org
       FIM_SUFFIX: 100260,
       ENDOFPROMPT: 100276,
     }
-  ``` 
+  ```  
 ## 3 Sentencepiece
 This is from Google used by Llama and Mixtral.  
-
-**tiktoken** encodes to utf-8 and then BPEs bytes. **sentencepiece** BPEs the code points and optionally falls back to utf-8 bytes for rare code points (rarity is determined by character_coverage hyperparameter), which then get translated to byte tokens.  
+OpenAI's **tiktoken** encodes to utf-8 and then BPEs bytes. **sentencepiece** BPEs the code points and optionally falls back to utf-8 bytes for rare code points (rarity is determined by character_coverage hyperparameter), which then get translated to byte tokens.  
 
 `byte_fallback` is one of the key parameters to play with when dealing with rare characters.  
 
