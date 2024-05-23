@@ -128,3 +128,75 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
             ids = merge(ids, pair, idx)
         return ids
   ```
+
+  ## 2 OpenAI Implementations
+  1. GPT-2 splitter
+  Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015060c964af2c3da4cf7c8ab/src/encoder.py#L53)
+  ```python
+  import regex as re
+  ## \p{L} any letters
+  ## \p{N} any numbers
+  gpt2pat = re.compile(r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""")
+  print(re.findall(gpt2pad, "Hello's World123  !!  "))
+  ##['Hello', "'s", ' World', '123', ' ', ' !!', '  ']
+  ```
+  2. tiktoken
+  The recommended library for tokenization.
+  The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
+  ```python
+  import tiktoken
+  # GPT-2 (does not merge spaces)
+  enc = tiktoken.get_encoding("gpt2")
+  print(enc.encode("   Hello World!!!"))
+  ## [220, 220, 18435, 2159, 10185]
+
+  # GPT-4 (merge spaces)
+  enc = tiktoken.get_encoding("cl100k_base")
+  print(enc.encode("   Hello World!!!"))
+  ## [256, 22691, 4435, 12340]
+  ```
+  3. Artifacts  
+  [encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe)
+  ```python
+
+  with open('encoder.json', 'r') as f:
+      encoder = json.load(f) # <--- ~equivalent to our "vocab" (chars->idx)
+  ## encoder['!'] = 0
+  ## encoder['a'] = 64
+
+  with open('vocab.bpe', 'r', encoding="utf-8") as f:
+      bpe_data = f.read()
+  bpe_merges = [tuple(merge_str.split()) for merge_str in bpe_data.split('\n')[1:-1]]
+  # ^---- ~equivalent to our "merges" (char, char)->new_idx
+  ## bpe_merges[10000]=(' exper', 'iments')
+  ```
+  4. Special tokens
+  There is ONE special token in GPT-2
+  ```python
+  len(bpe_merges) == 5000
+  # 256 raw byte tokens. 50,000 merges. +1 special token
+  len(encoder) == 50257
+  encoder['<|endoftext|>'] == 50256
+  ```
+  and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org/pdf/2207.14255) related. (Fill in the Middle, to be learned )
+  ```python
+  special_tokens = {
+    ENDOFTEXT: 100257,
+    FIM_PREFIX: 100258,
+    FIM_MIDDLE: 100259,
+    FIM_SUFFIX: 100260,
+    ENDOFPROMPT: 100276,
+}
+  ``` 
+## 3 Sentencepiece
+This is from Google used by Llama and Mixtral.  
+
+**tiktoken** encodes to utf-8 and then BPEs bytes. **sentencepiece** BPEs the code points and optionally falls back to utf-8 bytes for rare code points (rarity is determined by character_coverage hyperparameter), which then get translated to byte tokens.  
+
+`byte_fallback` is one of the key parameters to play with when dealing with rare characters.  
+
+Tons of parameters, NOT favoured.
+
+## 4 SolidGoldMagikarp
+This [blog](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation) explains this famous reddit username.
+![Alt text](/assets/images/2024/24-05-18-Karpathy-tokenizer_files/reddit.png) 
