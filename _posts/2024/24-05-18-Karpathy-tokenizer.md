@@ -75,8 +75,8 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
             newids.append(ids[i])
             i += 1
     return newids
-  ```
-3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens
+  ```  
+3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.  
   ```python
   num_merges = vocab_size - 256
 
@@ -108,30 +108,29 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
     text = text_bytes.decode("utf-8", errors="replace")
     return text
   ```
-  Encoding needs to find the pair with the lowest merge index
+Encoding needs to find the pair with the lowest merge index
   ```python
-   def encode(self, text):
-        # given a string text, return the token ids
-        text_bytes = text.encode("utf-8") # raw bytes
-        ids = list(text_bytes) # list of integers in range 0..255
-        while len(ids) >= 2:
-            stats = get_stats(ids)
-            pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
-            # subtle: if there are no more merges available, the key will
-            # result in an inf for every single pair, and the min will be
-            # just the first pair in the list, arbitrarily
-            # we can detect this terminating case by a membership check
-            if pair not in self.merges:
-                break # nothing else can be merged anymore
-            # otherwise let's merge the best pair (lowest merge index)
-            idx = self.merges[pair]
-            ids = merge(ids, pair, idx)
-        return ids
+  def encode(self, text):
+      # given a string text, return the token ids
+      text_bytes = text.encode("utf-8") # raw bytes
+      ids = list(text_bytes) # list of integers in range 0..255
+      while len(ids) >= 2:
+          stats = get_stats(ids)
+          pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
+          # subtle: if there are no more merges available, the key will
+          # result in an inf for every single pair, and the min will be
+          # just the first pair in the list, arbitrarily
+          # we can detect this terminating case by a membership check
+          if pair not in self.merges:
+              break # nothing else can be merged anymore
+          # otherwise let's merge the best pair (lowest merge index)
+          idx = self.merges[pair]
+          ids = merge(ids, pair, idx)
+      return ids
   ```
-
-  ## 2 OpenAI Implementations
-  1. GPT-2 splitter
-  Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015060c964af2c3da4cf7c8ab/src/encoder.py#L53)
+## 2 OpenAI Implementations
+1. GPT-2 splitter
+Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015060c964af2c3da4cf7c8ab/src/encoder.py#L53)
   ```python
   import regex as re
   ## \p{L} any letters
@@ -140,9 +139,9 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
   print(re.findall(gpt2pad, "Hello's World123  !!  "))
   ##['Hello', "'s", ' World', '123', ' ', ' !!', '  ']
   ```
-  2. tiktoken
-  The recommended library for tokenization.
-  The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
+2. tiktoken  
+The recommended library for tokenization.
+The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
   ```python
   import tiktoken
   # GPT-2 (does not merge spaces)
@@ -155,8 +154,8 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
   print(enc.encode("   Hello World!!!"))
   ## [256, 22691, 4435, 12340]
   ```
-  3. Artifacts  
-  [encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe)
+3. Artifacts  
+[encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe)
   ```python
 
   with open('encoder.json', 'r') as f:
@@ -170,23 +169,23 @@ Decode may not work for every bytes, so `error="replace"` will catch the fell th
   # ^---- ~equivalent to our "merges" (char, char)->new_idx
   ## bpe_merges[10000]=(' exper', 'iments')
   ```
-  4. Special tokens
-  There is ONE special token in GPT-2
+4. Special tokens
+There is ONE special token in GPT-2
   ```python
   len(bpe_merges) == 5000
   # 256 raw byte tokens. 50,000 merges. +1 special token
   len(encoder) == 50257
   encoder['<|endoftext|>'] == 50256
   ```
-  and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org/pdf/2207.14255) related. (Fill in the Middle, to be learned )
+and there are 5 special tokens in GPT4 and 3 of them are [FIM](https://arxiv.org/pdf/2207.14255) related. (Fill in the Middle, to be learned )  
   ```python
-  special_tokens = {
-    ENDOFTEXT: 100257,
-    FIM_PREFIX: 100258,
-    FIM_MIDDLE: 100259,
-    FIM_SUFFIX: 100260,
-    ENDOFPROMPT: 100276,
-}
+    special_tokens = {
+      ENDOFTEXT: 100257,
+      FIM_PREFIX: 100258,
+      FIM_MIDDLE: 100259,
+      FIM_SUFFIX: 100260,
+      ENDOFPROMPT: 100276,
+    }
   ``` 
 ## 3 Sentencepiece
 This is from Google used by Llama and Mixtral.  
