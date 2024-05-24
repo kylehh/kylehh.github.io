@@ -15,3 +15,14 @@ _posts/
 6. After conversion, modify ![image.png](/assets/images/YY-MM-DD-FILE-TITLE_files/image.png)
 7. In VS code, directly paste image into it and choose 'copy as markdown images'. Then images will be saved in the md or jupyter folder
 8. Move the images into /assets/images/YY-MM-DD-FILE-TITLE_files folder and rename it. 
+
+
+## 1 Title
+1. title
+  ```python
+  CAN NOT HAVE SPACED IN THE CODE
+  ```
+
+Local test
+1. bundle install
+2. bundle exec jekyll serve

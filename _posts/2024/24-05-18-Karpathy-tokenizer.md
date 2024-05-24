@@ -75,32 +75,31 @@ The [example](https://en.wikipedia.org/wiki/Byte_pair_encoding) from wiki is sim
             i += 1
     return newids
   ```  
-3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.
-
+3. Training for the tokenizer by iteratively merging the most common pairs to create new tokens.  
   ```python
   # Remove 256 original chars
   num_merges = vocab_size - 256
-
   # input text preprocessing
   text_bytes = text.encode("utf-8") # raw bytes
   ids = list(text_bytes) # list of integers in range 0..255
-
+  #
   merges = {} # (int, int) -> int
   vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
   for i in range(num_merges):
-      # count up the number of times every consecutive pair appears
-      stats = get_stats(ids)
-      # find the pair with the highest count
-      pair = max(stats, key=stats.get)
-      # mint a new token: assign it the next available id
-      idx = 256 + i
-      # replace all occurrences of pair in ids with idx
-      ids = merge(ids, pair, idx)
-      # save the merge
-      merges[pair] = idx
-      vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
-
+    # count up the number of times every consecutive pair appears
+    stats = get_stats(ids)
+    # find the pair with the highest count
+    pair = max(stats, key=stats.get)
+    # mint a new token: assign it the next available id
+    idx = 256 + i
+    # replace all occurrences of pair in ids with idx
+    ids = merge(ids, pair, idx)
+    # save the merge
+    merges[pair] = idx
+    vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
+  #End
   ```  
+
 4. Decode and Encode  
 Decode may not work for every bytes, so `error="replace"` will catch the fell through bytes
   ```python
@@ -145,28 +144,24 @@ Copied from GPT-2 [code](https://github.com/openai/gpt-2/blob/9b63575ef42771a015
 2. tiktoken  
 The recommended library for tokenization.
 The regular express is similar to gpt-2 [here](https://github.com/openai/tiktoken/blob/c0ba74c238d18b4824c25f3c27fc8698055b9a76/tiktoken_ext/openai_public.py#L23)
-
   ```python
   import tiktoken
   # GPT-2 (does not merge spaces)
   enc = tiktoken.get_encoding("gpt2")
   print(enc.encode("   Hello World!!!"))
   ## [220, 220, 18435, 2159, 10185]
-
   # GPT-4 (merge spaces)
   enc = tiktoken.get_encoding("cl100k_base")
   print(enc.encode("   Hello World!!!"))
   ## [256, 22691, 4435, 12340]
-  ```  
+  ```
 3. Artifacts  
 [encoder.json](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/encoder.json) and [vocab.bpe](https://openaipublic.blob.core.windows.net/gpt-2/models/1558M/vocab.bpe) are downloaded from openai.
   ```python
-
   with open('encoder.json', 'r') as f:
       encoder = json.load(f) # <--- ~equivalent to our "vocab" (chars->idx)
   ## encoder['!'] = 0
   ## encoder['a'] = 64
-
   with open('vocab.bpe', 'r', encoding="utf-8") as f:
       bpe_data = f.read()
   bpe_merges = [tuple(merge_str.split()) for merge_str in bpe_data.split('\n')[1:-1]]

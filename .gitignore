@@ -6,3 +6,5 @@ __pycache__/
 _jupyter/data/
 _jupyter/.data/
 _jupyter/tagger/
+Gemfile.lock
+_site/
