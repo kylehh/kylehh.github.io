@@ -3,9 +3,9 @@ title: Entropy and Perplexity
 mathjax: true
 toc: true
 categories:
-  - Math
-tags:
   - Study
+tags:
+  - Math
 ---
 
 Understanding Shannon's entropy is curcial to understand concepts like **cross entropy** and **KL divergenece**. But perplexity is the concept comes with NLP. Here is a good intuition explanation [here](https://towardsdatascience.com/the-intuition-behind-shannons-entropy-e74820fe9800) and [here](https://towardsdatascience.com/perplexity-intuition-and-derivation-105dd481c8f3) on medium.

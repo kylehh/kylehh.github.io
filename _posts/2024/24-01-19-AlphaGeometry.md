@@ -5,7 +5,7 @@ toc: true
 categories:
   - Study
 tags:
-  - DeepLearning
+  - ML
 ---
 
 I have been sick since the trip to China and haven't fully recovered even till today. I totally underestimated the damage of 雾霾（smog, a word combining smoke and fog) and had a 3 miles run without mask. I deserved it...

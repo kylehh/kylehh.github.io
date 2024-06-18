@@ -3,7 +3,7 @@ title: Workshops and Buildouts
 mathjax: true
 toc: true
 categories:
-  - Study
+  - Application
 tags:
   - Misc
 ---

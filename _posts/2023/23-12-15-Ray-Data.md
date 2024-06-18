@@ -3,7 +3,7 @@ title: Ray Data
 mathjax: true
 toc: true
 categories:
-  - Cody
+  - Code
 tags:
   - ML
 ---

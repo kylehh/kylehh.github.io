@@ -5,7 +5,7 @@ toc: true
 categories:
   - Study
 tags:
-  - ML
+  - GPU
 ---
 
 Nvidia's server GPUs have been envolving. I was quite familiar with GPU types back in CGG but after 4 or 5 years, I am totally out of sync
