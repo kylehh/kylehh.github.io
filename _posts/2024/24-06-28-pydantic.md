@@ -48,7 +48,7 @@ class Student(BaseModel):
   def split_tags(cls, value):
         return value.split(",")
 
-stu = Student(tags="This,is,a,string",...)
+stu = Student(tags="a,b,c",...)
 ```
 This would leads to following error due to 'tags' expects a List.  
 This is can be fixed by adding `pre=True` argument  
@@ -57,13 +57,45 @@ This is can be fixed by adding `pre=True` argument
 def split_tags(cls, value):
     #split a string into List
     return value.split(",")
+
+### OR we can use roo_validator ###
+@root_validator(pre=True)
+# This runs FIRST, values['tags']=="a,b,c"
+def validate_all(cls, values):
+    print("-->root_validator FIRST")
+    print(cls, values)
+    values['tags']=values['tags'].split(',')
+    return values
+
+@root_validator()
+# This runs LAST, values['tags']==[a,b,c]
+def validate_all(cls, values):
+    print("-->root_validator LAST")
+    print(cls, values)
+    return values
 ```
+Use 'pre=True' for `root_validator` will move it above all `validator`, including fields validators
+
 ## 4 Per-Item Validators
 Use the 'tags' example, if we want to apply validator to each item in the list, we can use `each_item` argument. 
 ```python
 @validator('tags', each_item=True)
+## remove_slackers will be called MULTIPLE times
+## each time, value is an element from the tags list
 def remove_slackers(cls, value):
     if value == 'slacker':
         raise ValueError("Student is a slacker and cannot be enrolled!")
+    return value
+```
+So `each_item` argument controls the type of `value` is element or the whole List
+```python
+@validatorv1('modules',each_item=False)
+#validate_modules will ONLY called ONCE
+# The whole list is in value (type List)
+def validate_modules(cls, value, values):
+    print(value, type(value), values)
+    if type(value)==list:
+        for v in value:
+            print(v)
     return value
 ```
