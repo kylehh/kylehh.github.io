@@ -1,11 +1,11 @@
 ---
-title: Python staticmethod and classmethod
+title: Elo ranking and Bradly-Terry
 mathjax: true
 toc: true
 categories:
-  - Code
+  - Study
 tags:
-  - Python
+  - Math
 ---
 
 ## 1. try/catch/else/finally
