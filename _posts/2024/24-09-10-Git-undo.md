@@ -63,4 +63,4 @@ This is like `git reset HEAD --hard` but on one file
 
 `--hard` would reset working directory so changes are lost
 
-`--soft` is resetting `git commit` 
+`--soft` is resetting HEAD only. 
