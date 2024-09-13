@@ -8,13 +8,13 @@ tags:
   - Git
 ---
 
-More details at this [link](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
-
 I will start with simple [cheat sheet]([2f5451f](https://www.nobledesktop.com/learn/git/undo-changes)) before diving into reset/revert/checkout
 
+- Undo changes
+  `git checkout changed_file`
 - Undo `git add`  
-  `git checkout added_file`  
-or `git reset added_file`
+  `git checkout HEAD added_file`  # changes to the file is lost  
+or `git reset added_file`    # changes persist
 - Undo `git commit`  
   `git reset --soft HEAD~`
 - Undo `git push`  
@@ -23,17 +23,18 @@ or `git reset added_file`
 
 ## 1 Checkout
 Checkout a branch is the most common usage and what happens behind the scence is moving **HEAD** to a specific **commit**
-![Alt text](/assets/images/2024/24-09-10-Git/checkout.png)
+![Alt text](/assets/images/2024/24-09-10-Git-undo_files/checkout.png)
 
 Here is the example of `git checkout hotfix` followed by `git checkout HEAD~2`
-![Alt text](/assets/images/2024/24-09-10-Git/checkout-head.png)  
+![Alt text](/assets/images/2024/24-09-10-Git-undo_files/checkout-head.png)  
 ## 2 Reset
 A reset is an operation that takes a specified commit and resets the "three trees" to match the state of the repository at that specified commit.  
-`git checkout hotfix` followed by `git reset HEAD~2` will leave **orphan commits**
-![Alt text](/assets/images/2024/24-09-10-Git/resethead.png)
+`git checkout hotfix` followed by `git reset HEAD~2` will leave **orphaned commits**
+![Alt text](/assets/images/2024/24-09-10-Git-undo_files/reset-head.png)
 
 ## 3 Revert
-
+Reverting undoes a commit by creating a new commit. This is a **safe** way to undo changes, as it has no chance of re-writing the commit history. 
+![Alt text](/assets/images/2024/24-09-10-Git-undo_files/revert-head.png)
 ## 4 Comparison
 |Work level |Reset | Revert | Checkout|  
 |---|--|---|---|
