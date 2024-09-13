@@ -45,18 +45,3 @@ Reverting undoes a commit by creating a new commit. This is a **safe** way to un
 |Commit|Discard commits in a private branch|Undo commits in a public branch|Switch between branches (or inspect old snapshots)|
 |File|unstage a file|N/A|Discard changes in the working directory|
 
-## 5 Reset vs Check a FILE
-`git reset (HEAD) file_name`  
-![Alt text](/assets/images/2024/24-09-10-Git-undo_files/reset-file.png)
-**The --soft, --mixed, and --hard flags do not have any effect on the file-level version of git reset**, as the staged snapshot is always updated, and the working directory is never updated. Thus **changes persist**
-
-`git checkout HEAD file_name`  
-Checking out a file is similar to using git reset with a file path, except it updates the working directory instead of the stage, so you **lost the changes**. Unlike the commit-level version of this command, this does not move the HEAD reference, which means that you won’t switch branches.
-
-This is like `git reset HEAD --hard` but on one file
-![Alt text](/assets/images/2024/24-09-10-Git-undo_files/checkout-file.png)
-
-## 6 Reset Options
-![Alt text](/assets/images/2024/24-09-10-Git-undo_files/reset-options.png)
-
-`--mixed` is the default option for `git reset commit_hash`
