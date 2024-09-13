@@ -59,4 +59,8 @@ This is like `git reset HEAD --hard` but on one file
 ## 6 Reset Options
 ![Alt text](/assets/images/2024/24-09-10-Git-undo_files/reset-options.png)
 
-`--mixed` is the default option for `git reset commit_hash`
+`--mixed` is the default option for `git reset commit_hash` and it undo `git add` options but not resetting working directory, so **changes persist**
+
+`--hard` would reset working directory so changes are lost
+
+`--soft` is resetting `git commit` 
