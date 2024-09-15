@@ -36,6 +36,7 @@ Use `git rebase --interactive HEAD~3` to interactively rebase previous 3 commits
 
 Now you can fast-forwrd merge the feature branch in main.(or squash and merge, which **squash** multipl commits into one)
 ![Alt text](/assets/images/2024/24-09-13-Git-ff-rebase_files/squash.png) 
+
 ## 3 The golden rule of rebasing
 **Never** use it on public branch.
 It will force *main* to get all commit from you, while others don't need. 
