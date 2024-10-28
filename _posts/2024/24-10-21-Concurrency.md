@@ -1,11 +1,11 @@
 ---
-title: Kolmogorov-Arnold Network
+title: Concurrency Execution
 mathjax: true
 toc: true
 categories:
-  - Study
+  - Code
 tags:
-  - LLM
+  - Python
 ---
 
 It's all over the internet about how [KAN](https://arxiv.org/pdf/2404.19756) will revolutionize ML by replacing MLP. Here are my frist read about KAN
