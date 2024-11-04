@@ -22,8 +22,11 @@ Medusa uses ONLY one model as both draft and target models, but with multiple Me
 ![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/medusa.png)
 With top-k for each Medusa head, you will have $n*k_1*k_2...*k_n$ tokens to choose from. 
 ![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/tree.png)
+
+### 1.1 Structure
 There is a typo in the original paper that $W_2$ should be initialized as the original model head, **NOT $W_1$**  
 ![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/typo.png)
+
 ```python
 # Medusa Block
 class ResBlock(nn.Module):
@@ -34,7 +37,9 @@ class ResBlock(nn.Module):
         self.act = nn.SiLU()
     def forward(self, x):
         return x + self.act(self.linear(x))
-      
+```
+![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/heads.png)
+```python
 # Medusa Model
 class MedusaModel(nn.Module):
     def __init__(
@@ -62,7 +67,9 @@ model = MedusaModel(
         base_model_name_or_path='./min_llama',
     )
 ```
-For Medusa 1, the training would fix the original model but find loss from all Medusa heads (The original output is ignored, that's why starts from $t+1+1$)
+### 1.2 Training
+
+For Medusa 1, the training would fix the original model but find loss from all Medusa heads (The original output is ignored, that's why starts from $t+1+1$). Medusa 2 would train for LLM backend as well.
 ```python
 # medusa/train/train.py
 def compute_loss(self, model, inputs, return_outputs=False):
@@ -80,8 +87,14 @@ def compute_loss(self, model, inputs, return_outputs=False):
       loss_i = CrossEntropyLoss(medusa_logits, medusa_labels)
       loss += loss_i
 ```
+### 1.3 Inference
+During infenernce, first around you will get output from origin head and Medusa heads(4).
+![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/infer.png)
+The verify phase will use the predicted results go over the heads and get 5 next tokens.
+After comparison, you will get original token, accepted tokens, and token at the accept_length,like a bonus 
+![Alt text](/assets/images/2024/24-10-08-Medusa-Eagle_files/verify.png)
+
+### 1.4 Tree Attention
 The modified tree structure can reduce the tokens to $k_1+k_1*k_2+k_1*k_2*k_3+...+k_1*...*k_n. $
 
-## 2 Eagle
-## 3 Implementations
 
