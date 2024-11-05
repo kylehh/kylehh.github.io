@@ -8,9 +8,10 @@ tags:
   - LLM
 ---
 
-To understand NIM, you can avoid deeper undertand of TRT-LLM, Triton and even vLLM. Those will be focus for the next months
+To understand NIM, you can not avoid deep undertanding of TRT-LLM, Triton and even vLLM. Those will be focus for the near future.
 
-This is more like a note of how to hosting a LLM on Triton with TRTLLM backend 
+This is more like a note of how to hosting a LLM on Triton with TRTLLM backend
+ 
 ## 1 Build the Container
 The workspace is a container built for Triton Server. The [instructions](https://github.com/triton-inference-server/tensorrtllm_backend/blob/main/docs/build.md) is for TensorRT-LLM backend. 
 1. Build the TensorRT-LLM Backend from source  
@@ -46,4 +47,38 @@ curl -X POST localhost:8000/v2/models/${MODEL_NAME}/generate \
     "bad_words": "",
     "stop_words": ""
     }'
+```
+
+## 5 Real examples
+```shell
+MODEL_CHECKPOINT="mixtral-8x7b-instruct-v01_vhf-a60832c-b"
+OUTPUT_MODEL="MRG-Mistral8x7"
+
+CONVERTED_CHECKPOINT="${MODEL_CHECKPOINT}-converted"
+TOKENIZER=${MODEL_CHECKPOINT}
+
+
+DTYPE=float16
+TP=2
+PP=1
+MAX_LEN=13000
+MAX_BATCH=128
+MAX_LORA_RANK=32
+
+
+SUFFIX=/trtllm_engine
+ENGINE=${OUTPUT_MODEL}/${SUFFIX}
+
+# Build lora enabled engine
+python3 /app/tensorrt_llm/examples/llama/convert_checkpoint.py --model_dir ${MODEL_CHECKPOINT} \
+  --output_dir ${CONVERTED_CHECKPOINT} \
+  --dtype ${DTYPE} \
+  --tp_size ${TP} \
+  --moe_tp_size ${TP}
+
+trtllm-build \
+  --checkpoint_dir ${CONVERTED_CHECKPOINT} \
+  --output_dir ${ENGINE} \
+  --max_num_tokens $MAX_LEN --use_paged_context_fmha enable \
+  --gemm_plugin float16
 ```
