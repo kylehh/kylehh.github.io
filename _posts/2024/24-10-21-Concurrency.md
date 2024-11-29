@@ -8,32 +8,45 @@ tags:
   - Python
 ---
 
-It's all over the internet about how [KAN](https://arxiv.org/pdf/2404.19756) will revolutionize ML by replacing MLP. Here are my frist read about KAN
+I was testing sending concurrent requests to LLM server and would like to record two ways to running concurrent processes. and would have a deeper dive on async later
 
-## 0 Motivations and Spline 
-While MLPs have fixed activation functions on nodes (“neurons”), KANs have learnable
-activation functions on edges (“weights”). KANs have NO linear weights AT ALL – every
-weight parameter is replaced by a univariate function parametrized as a spline. 
-![Alt text](/assets/images/2024/24-05-05-KAN_files/moti.png)
+## 1 With `concurrent` lib
+```python
+from concurrent.futures import ThreadPoolExecutor, as_completed
+def llm_call(idx):
+    response = requests.post(url, json=json_data, headers=headers)
+    return(idx, response.json()['choices'][0]['message']['content'])
 
-A **spline** is a function defined piecewise by polynomials. For example cubic spline is defined by 3rd order polynoimals in each segment $[t_{i-1}, t_i], i=1...n$
-![Alt text](/assets/images/2024/24-05-05-KAN_files/cubicspine.png)  
-In order to solve this equation with $4n$ parameters, we already have $3(n-1)$ equations shown above.   
-By constraining $S(x_i)=y_i, i=0...n$ gives another $n+1$ equations.  
-The last two constrains can have different options, and by setting $S(t_0)=S(t_n)=0$ gives you **natural cubic spline**
+with ThreadPoolExecutor() as executor:
+    #executor.map(llm_call, ints)
+    futures = [executor.submit(llm_call, i) for i in range(Test_number)]
 
+    # Retrieve results as they become available
+    for future in as_completed(futures):
+        try:
+            idx, result = future.result()
+            #print(f"Result: {idx}, {result}")
+        except Exception as e:
+            print(f"Error: {e}")
+```
 
-## 1 Kolmogorov-Arnold Representation theorem
-**Vladimir Arnold** and **Andrey Kolmogorov** established that if $f$ is a multivariate continuous function on a bounded domain, then $f$ can be written as a finite composition of continuous functions of a single variable (univariate) and the binary operation of addition.
-![Alt text](/assets/images/2024/24-05-05-KAN_files/KAR.png)
+## 2 With `asyncio` lib
+```python
+import asyncio
 
-## 2 Kolmogorov-Arnold Network (KAN)
-![Alt text](/assets/images/2024/24-05-05-KAN_files/KAN.png)  
-With this generalization of $\Phi$, then KAN can be constructed simply by stacking layers!  
-$$KAN(X)=\Phi_{L-1}\circ...\circ\Phi_1\circ\Phi_0\circ X$$
+async def call_private_api_client():
+    answer = ...
+    return answer
 
-In constrast, a MLP is interleaved by linear layers $W$ and nonlinearities $\sigma$:
-$$MLP(X)=W_{L-1}\circ\sigma\circ...\circ W_1\circ\sigma\circ W_0\circ\sigma\circ X$$
+def llm_call(idx):
+    result = asyncio.run(call_private_api_client())
+    return(idx, result)
 
-## 3 Implementations
+async def llm_call_gather(num):
+    tasks = [call_private_api_client() for _ in range(num)]
+    return await asyncio.gather(*tasks)
 
+if __name__ == "__main__":
+    resp = llm_call(0)   
+    results = asyncio.run(llm_call_gather(num_con_tests))
+```
