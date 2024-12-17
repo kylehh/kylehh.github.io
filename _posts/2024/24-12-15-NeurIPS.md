@@ -1,5 +1,5 @@
 ---
-title: Interesting papers
+title: MultiModal Input in vLLM
 mathjax: true
 toc: true
 categories:
@@ -8,16 +8,117 @@ tags:
   - LLM
 ---
 
-This past week is NeurIPS and I would like to share some paper I read recently.
+I started my first vLLM contribution by adding the audio input API following OpenAI's [schema](https://platform.openai.com/docs/guides/audio?audio-generation-quickstart-example=audio-in).
 
+vLLM's multimodal input for OpenAI's Chat-Completion API works for image, audio and video.
+The support is not explicitly writing but following format work for all these inputs
+```python
+# It support directly image/audio/video URL, 
+messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "What's in this image?"
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": image_url
+                    },
+                },
+            ],
+        }],
+# Or use base64 encoded audio
+        {
+            "type": "audio_url",
+            "audio_url": {
+                # Any format supported by librosa is supported
+                "url": f"data:audio/ogg;base64,{audio_base64}"
+            },
+        },
 
-趁这周NeurIPS，分享几篇最近刷到有意思的paper。开始之前先谈感想：听过很多关于大模型不会思考的论调，我觉得这是人类的一种傲慢。学习AI对我来说就是对大脑祛魅的过程，模拟所谓的思维，逻辑，甚至情感，我都认为没有不可跨越的鸿沟。
+```
+## 1 Supported API format
+The new format is using `input_audio` type instead of `audio_url`
+and it directly takes in base64 encoded audio.
+```python
+        {
+            "type": "input_audio",
+            "input_audio": {
+                # Any format supported by librosa is supported
+                "data": audio_base64,
+                "format": "wav"
+            },
+        },
+```
 
+## 2 Code Changes
+Majority of the code changes are in `vllm/entrypoint/chat_utils.py`
+1. Add class `ChatCompletionContentPartInputAudioParam`
+  This class is derived from `TypedDict` and can be directly imported from [OpenAI](https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_content_part_input_audio_param.py) by `from openai.types.chat import ChatCompletionContentPartInputAudioParam`.
+2. The code logic is as following
+```python
 
-[第一篇](https://arxiv.org/pdf/2411.07191)来自苹果，说的是大模型几百亿个参数里面会有个别超级参数，还举个栗子改一个超参，就能让大模型输出乱码。好比一个脑细胞坏了，你就不会说话了。这跟武侠点穴异曲同工，牵一发而动全身
+# Define partial functions, so when you call _AudioParse(part)
+# It will call: cast(ChatCompletionContentPartAudioParam, part)
+_AudioParser = partial(cast, ChatCompletionContentPartAudioParam)
+_InputAudioParser = partial(cast, ChatCompletionContentPartInputAudioParam)
 
-后两篇是Meta。[一](https://ai.meta.com/research/publications/byte-latent-transformer-patches-scale-better-than-tokens/)是说不用tokenzier直接训练字节也成了。tokenizier是大模型一大软肋，任何进展都值得观望。
+# Define a mapping from part types to their corresponding parsing functions.
+MM_PARSER_MAP: Dict[str,
+                    Callable[[ChatCompletionContentPartParam],
+                             Union[str, Dict[str,str]]]] = {
+    "audio_url":
+    lambda part: _AudioParser(part).get("audio_url", {}).get("url", ""),
+    "input_audio":
+    lambda part: _InputAudioParser(part).get("input_audio", {}),
+    ...
+}
 
-[第二](https://arxiv.org/abs/2412.06769)出自渊栋田大神的团队，背后的原理非常符合直觉：人类思考并不是全部都表达成语言，所以应该直接在潜空间训练模型思考，而不是在token空间。模型思考最近大火，我猜OAI的o1估计也用了类似的技术。
+#From parse_chat_messages()
+#A loop over _parse_chat_message_content()
+#calls _parse_chat_message_content_parts()
+#A loop over _parse_chat_message_content_part()
+#calls _parse_chat_message_content_mm_part()
 
-碳基们，你还能嘚瑟几天？
+content = MM_PARSER_MAP[part_type](part)
+
+if part.get("audio_url") is not None:
+    audio_params = cast(CustomChatCompletionContentSimpleAudioParam,
+                        part)
+    return "audio_url", audio_params.get("audio_url", "")
+if part.get("input_audio") is not None:
+    input_audio_params = cast(Dict[str, str], part)
+    return "input_audio", input_audio_params
+
+```
+
+## 3 Audio Parsing
+The multimodal parsing are all defined in `MultiModalContentParser` class. The core functin is `get_and_parse_audio` defined [here](https://github.com/vllm-project/vllm/blob/e8e6b6137c094bba6be3471122308e108fb08fac/vllm/multimodal/utils.py#L260). The new API is leveraging this function so we create a new URL following vLLM convention.
+```python
+def parse_audio(self, audio_url: str) -> None:
+    audio = get_and_parse_audio(audio_url)
+
+    placeholder = self._tracker.add("audio", audio)
+    self._add_placeholder(placeholder)
+
+def parse_input_audio(self, input_audio: Dict[str, str]) -> None:
+    input_audio_data = input_audio.get("data","")
+    input_audio_format = input_audio.get("format","")
+    audio_url = f"data:audio/{input_audio_format};base64,{input_audio_data}"
+    audio = get_and_parse_audio(audio_url)
+
+    placeholder = self._tracker.add("audio", audio)
+    self._add_placeholder(placeholder)
+```
+
+## 4 Future Improvmentment
+By defining the `ChatCompletionContentPartInputAudioParam`, I was expected to use this class for type casting, instead of casting to `Dict[str, str]`. But the `mypy` check would fail because ambiguities in the class defination. 
+
+Basically following code can NOT pass `mypy` type check. It complains expect `classUnion` but get `classA`. 
+```python
+classUnion = Union[classA, classB]
+def funcTest() -> classUnion:
+  return classA
+```
