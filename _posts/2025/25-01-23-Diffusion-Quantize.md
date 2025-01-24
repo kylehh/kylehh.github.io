@@ -24,7 +24,8 @@ The method in the blog is using [NV AMMO](https://pypi.org/project/nvidia-ammo/)
 ## 2 New Lib TensorRT-Model-Optimizer
 
 [ModelOpt](https://github.com/NVIDIA/TensorRT-Model-Optimizer) is a standalone project under NV Github repo. and I verified the quantization works for the SDXL example
-1. Build the Modelopt container
+1. Build the Modelopt container  
+
 ```sh
 # Clone the ModelOpt repository
 git clone https://github.com/NVIDIA/TensorRT-Model-Optimizer.git
@@ -43,7 +44,8 @@ docker run --gpus all -it  \
 -v /home/khuang/_git_repos/TensorRT:/TensorRT \
 -e HF_HOME=/raid/models/huggingface \
 $IMG_NAME bash
-```
+```  
+
 2. 8-bit ONNX Export 
 On A100 machines, go to this [folder](https://github.com/NVIDIA/TensorRT-Model-Optimizer/tree/main/diffusers/quantization) and build the INT8 engine for SDXL. It will output torch checkpoint and ONNX dir
 ```sh
@@ -87,6 +89,7 @@ cp -r {YOUR_UNETXL}.plan ./engine/unetxl.trt10.6.0.plan
 Now you can rerun the command in step 4 to generate images with INT8 UNet
 
 6. Results Comparision
+
 Output will be saved in `output` folder.  
 FP16
 ![Alt text](/assets/images/2025/25-01-23-Diffusion-Quantize_files/fp16.png)
