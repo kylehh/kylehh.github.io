@@ -38,13 +38,15 @@ Disaggregation comes at the cost of transferring intermediate states (i.e., KV C
 
 ## 3 Disagg VS Chunked Prefill/Piggybacking
 - [Dynamic SplitFuse](https://github.com/microsoft/DeepSpeed/blob/master/blogs/deepspeed-fastgen/README.md) from DeepSpeed (MS)
-- [Chunked Prefill and piggybacking ](https://arxiv.org/pdf/2308.16369.pdf) from MS and google, implemented in vLLM
-
-**Pipeline Parallelism** splits a model layer-wise, where each GPU is responsible for a subset of layers; compared to **Tensor Parallelism** which shards each layer across the participating GPUs. PP has a much better compute-communication ratio and does not require expensive interconnects. but it introduces **pipeline bubbles**
 
 ![Alt text](/assets/images/2025/25-02-12-Disagg-Serving_files/splitfuse.png)
 The key idea of splitfuse to split a lengthy prefill into smaller chunks, thereby forming a batch with better GPU utilization by combining a chunk of prefill with **piggybacked** decoding tasks.
 
+- [Chunked Prefill and piggybacking ](https://arxiv.org/pdf/2308.16369.pdf) from MS and google, implemented in vLLM
+
+**Pipeline Parallelism** splits a model layer-wise, where each GPU is responsible for a subset of layers; compared to **Tensor Parallelism** which shards each layer across the participating GPUs. PP has a much better compute-communication ratio and does not require expensive interconnects. but it introduces **pipeline bubbles**
+
+![Alt text](/assets/images/2025/25-02-12-Disagg-Serving_files/chunkedprefill.png)
 It may be promising for better throughput but does NOT tradeoff between TTFT and TPOT but to adhere to both. 
 
 For TTFT, chunked-prefill cause overheads regardless of chunksize
