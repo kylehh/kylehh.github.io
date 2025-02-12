@@ -16,9 +16,9 @@ print(s%s)
 
 There are two builtin functions for turning an object into a string: `str` vs. `repr`:
 - `%s` will call `str`, which is supposed to be a friendly, human readable string. 
-- `%r` will call `repr`, which is supposed to include detailed information about an object's contents (sometimes, they'll return the same thing, such as for integers).
+- `%r` will call `repr`, which is supposed to include detailed information about an object's contents 
 
-By convention, if there's a Python expression that will eval to another object that's ==, repr will return such an expression 
+`repr` will return such an expression that can be `eval` to another object that's `==` to the orignal one
 
 ```python
 class Foo:
@@ -41,7 +41,9 @@ class Foo:
     return "%s(%r)" % (class_name, self.foo)
 
 f = Foo('a')
-print(f) # will call __str__ and output Foo(a) 
+print("%s, %r" % (f, f))
+#output Foo(a), Foo('a')
 
-eval(repr(f)) == f # True
+eval(repr(f)) == f 
+# True
 ```
