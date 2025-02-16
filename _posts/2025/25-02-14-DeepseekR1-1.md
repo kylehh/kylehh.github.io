@@ -1,5 +1,5 @@
 ---
-title: Deepseek R1 - 1
+title: Deepseek R1 - RL review
 mathjax: true
 toc: true
 categories:
