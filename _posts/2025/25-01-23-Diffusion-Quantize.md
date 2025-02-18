@@ -24,8 +24,8 @@ The method in the blog is using [NV AMMO](https://pypi.org/project/nvidia-ammo/)
 ## 2 New Lib TensorRT-Model-Optimizer
 
 [ModelOpt](https://github.com/NVIDIA/TensorRT-Model-Optimizer) is a standalone project under NV Github repo. and I verified the quantization works for the SDXL example
-1. Build the Modelopt container  
 
+1. Build the Modelopt container  
 ```sh
 # Clone the ModelOpt repository
 git clone https://github.com/NVIDIA/TensorRT-Model-Optimizer.git
@@ -47,7 +47,8 @@ $IMG_NAME bash
 ```  
 
 2. 8-bit ONNX Export 
-On A100 machines, go to this [folder](https://github.com/NVIDIA/TensorRT-Model-Optimizer/tree/main/diffusers/quantization) and build the INT8 engine for SDXL. It will output torch checkpoint and ONNX dir
+On A100 machines, go to this [folder](https://github.com/NVIDIA/TensorRT-Model-Optimizer/tree/main/diffusers/quantization) and build the INT8 engine for SDXL. It will output torch checkpoint and ONNX dir  
+
 ```sh
 # The example script 
 #bash build_sdxl_8bit_engine.sh --format int8
@@ -59,8 +60,10 @@ python quantize.py --model sdxl-1.0 \
 --quantized-torch-ckpt-save-path /raid/models/SDXL-1.0/sdxl-1.0_3_int8.pt \
 --onnx-dir /raid/models/SDXL-1.0/sdxl-1.0_3_int8.onnx
 ```
+
 3. TRT Engine Built
-Now we can built the TRT Engine with following script
+Now we can built the TRT Engine with following script  
+
 ```sh
 trtexec --builderOptimizationLevel=4 --stronglyTyped --onnx=/raid/models/SDXL-1.0/sdxl-1.0_3_int8.onnx/backbone.onnx \
   --minShapes=sample:2x4x128x128,timestep:1,encoder_hidden_states:2x77x2048,text_embeds:2x1280,time_ids:2x6 \
@@ -81,10 +84,10 @@ python demo_txt2img_xl.py \
 This is will download model to `pytorch_model` folder and generate contents under `onnx`,`engine` and `output` folders. 
 
 5. Engine udpate
-The TRT engine built was for UNet. Now replace the `engine/unetxl.trt10.6.0.plan` engine with the one built in step 3.
+The TRT engine built was for UNet. Now replace the `engine/unetxl.trt10.6.0.plan` engine with the one built in step 3.  
 ```sh
 export YOUR_UNETXL=/raid/models/SDXL-1.0/trtexec_backbone
-cp -r {YOUR_UNETXL}.plan ./engine/unetxl.trt10.6.0.plan
+cp -r {YOUR_UNETXL}.plan ./engine/unetxl.trt10.6.0.plan  
 ```
 Now you can rerun the command in step 4 to generate images with INT8 UNet
 
