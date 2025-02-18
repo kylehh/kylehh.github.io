@@ -26,6 +26,7 @@ The method in the blog is using [NV AMMO](https://pypi.org/project/nvidia-ammo/)
 [ModelOpt](https://github.com/NVIDIA/TensorRT-Model-Optimizer) is a standalone project under NV Github repo. and I verified the quantization works for the SDXL example
 
 1. Build the Modelopt container  
+
 ```sh
 # Clone the ModelOpt repository
 git clone https://github.com/NVIDIA/TensorRT-Model-Optimizer.git
@@ -73,7 +74,8 @@ trtexec --builderOptimizationLevel=4 --stronglyTyped --onnx=/raid/models/SDXL-1.
 ```
 
 4. Test with Diffusion Pipeline  
-Go to TensorRT folder under demo/Diffusion
+Go to TensorRT folder under demo/Diffusion  
+
 ```sh
 # /TensorRT/demo/Diffusion
 python demo_txt2img_xl.py \
@@ -85,6 +87,7 @@ This is will download model to `pytorch_model` folder and generate contents unde
 
 5. Engine udpate
 The TRT engine built was for UNet. Now replace the `engine/unetxl.trt10.6.0.plan` engine with the one built in step 3.  
+
 ```sh
 export YOUR_UNETXL=/raid/models/SDXL-1.0/trtexec_backbone
 cp -r {YOUR_UNETXL}.plan ./engine/unetxl.trt10.6.0.plan  
