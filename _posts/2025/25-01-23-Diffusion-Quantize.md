@@ -27,40 +27,40 @@ The method in the blog is using [NV AMMO](https://pypi.org/project/nvidia-ammo/)
 
 1. Build the Modelopt container  
 
-```sh
-# Clone the ModelOpt repository
-git clone https://github.com/NVIDIA/TensorRT-Model-Optimizer.git
-cd TensorRT-Model-Optimizer
+  ```sh
+  # Clone the ModelOpt repository
+  git clone https://github.com/NVIDIA/TensorRT-Model-Optimizer.git
+  cd TensorRT-Model-Optimizer
 
-# Build the docker (will be tagged `modelopt_examples:latest`)
-# You may customize `docker/Dockerfile` to include or exclude certain dependencies you may or may not need.
-./docker/build.sh
+  # Build the docker (will be tagged `modelopt_examples:latest`)
+  # You may customize `docker/Dockerfile` to include or exclude certain dependencies you may or may not need.
+  ./docker/build.sh
 
-# Mount model folder, TensorRT code folder
-export IMG_NAME=docker.io/library/modelopt_examples:latest
-# Run the docker image
-docker run --gpus all -it  \
---shm-size 20g --rm \
--v /raid/models:/raid/models \
--v /home/khuang/_git_repos/TensorRT:/TensorRT \
--e HF_HOME=/raid/models/huggingface \
-$IMG_NAME bash
-```  
+  # Mount model folder, TensorRT code folder
+  export IMG_NAME=docker.io/library/modelopt_examples:latest
+  # Run the docker image
+  docker run --gpus all -it  \
+  --shm-size 20g --rm \
+  -v /raid/models:/raid/models \
+  -v /home/khuang/_git_repos/TensorRT:/TensorRT \
+  -e HF_HOME=/raid/models/huggingface \
+  $IMG_NAME bash
+  ```  
 
 2. 8-bit ONNX Export 
 On A100 machines, go to this [folder](https://github.com/NVIDIA/TensorRT-Model-Optimizer/tree/main/diffusers/quantization) and build the INT8 engine for SDXL. It will output torch checkpoint and ONNX dir  
 
-```sh
-# The example script 
-#bash build_sdxl_8bit_engine.sh --format int8
+  ```sh
+  # The example script 
+  #bash build_sdxl_8bit_engine.sh --format int8
 
-## Actually commands
-python quantize.py --model sdxl-1.0 \
---format int8 --batch-size 2 --calib-size 32 --collect-method min-mean \
---percentile 1.0 --alpha 0.8 --quant-level 3 --n-steps 20 \
---quantized-torch-ckpt-save-path /raid/models/SDXL-1.0/sdxl-1.0_3_int8.pt \
---onnx-dir /raid/models/SDXL-1.0/sdxl-1.0_3_int8.onnx
-```
+  ## Actually commands
+  python quantize.py --model sdxl-1.0 \
+  --format int8 --batch-size 2 --calib-size 32 --collect-method min-mean \
+  --percentile 1.0 --alpha 0.8 --quant-level 3 --n-steps 20 \
+  --quantized-torch-ckpt-save-path /raid/models/SDXL-1.0/sdxl-1.0_3_int8.pt \
+  --onnx-dir /raid/models/SDXL-1.0/sdxl-1.0_3_int8.onnx
+  ```
 
 3. TRT Engine Built
 Now we can built the TRT Engine with following script  

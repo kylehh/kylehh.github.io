@@ -58,8 +58,8 @@ Majority of the code changes are in `vllm/entrypoint/chat_utils.py`
 1. Add class `ChatCompletionContentPartInputAudioParam`
   This class is derived from `TypedDict` and can be directly imported from [OpenAI](https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_content_part_input_audio_param.py) by `from openai.types.chat import ChatCompletionContentPartInputAudioParam`.
 2. The code logic is as following  
-```python
 
+```python
 # Define partial functions, so when you call _AudioParse(part)
 # It will call: cast(ChatCompletionContentPartAudioParam, part)
 _AudioParser = partial(cast, ChatCompletionContentPartAudioParam)
@@ -95,7 +95,8 @@ if part.get("input_audio") is not None:
 ```
 
 ## 3 Audio Parsing
-The multimodal parsing are all defined in `MultiModalContentParser` class. The core functin is `get_and_parse_audio` defined [here](https://github.com/vllm-project/vllm/blob/e8e6b6137c094bba6be3471122308e108fb08fac/vllm/multimodal/utils.py#L260). The new API is leveraging this function so we create a new URL following vLLM convention.    
+The multimodal parsing are all defined in `MultiModalContentParser` class. The core functin is `get_and_parse_audio` defined [here](https://github.com/vllm-project/vllm/blob/e8e6b6137c094bba6be3471122308e108fb08fac/vllm/multimodal/utils.py#L260). The new API is leveraging this function so we create a new URL following vLLM convention.  
+
 ```python
 def parse_audio(self, audio_url: str) -> None:
     audio = get_and_parse_audio(audio_url)
@@ -122,3 +123,7 @@ classUnion = Union[classA, classB]
 def funcTest() -> classUnion:
   return classA
 ```
+
+## 5 Local Test
+Install vllm locally by running
+`VLLM_USE_PRECOMPILED=1 pip install --editable .` unless you need to change the C++/CUDA kernel
