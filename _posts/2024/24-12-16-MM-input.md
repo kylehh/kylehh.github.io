@@ -1,5 +1,5 @@
 ---
-title: Kolmogorov-Arnold Network
+title: MultiModal Input in vLLM
 mathjax: true
 toc: true
 categories:
@@ -8,32 +8,117 @@ tags:
   - LLM
 ---
 
-It's all over the internet about how [KAN](https://arxiv.org/pdf/2404.19756) will revolutionize ML by replacing MLP. Here are my frist read about KAN
+I started my first vLLM contribution by adding the audio input API following OpenAI's [schema](https://platform.openai.com/docs/guides/audio?audio-generation-quickstart-example=audio-in).
 
-## 0 Motivations and Spline 
-While MLPs have fixed activation functions on nodes (“neurons”), KANs have learnable
-activation functions on edges (“weights”). KANs have NO linear weights AT ALL – every
-weight parameter is replaced by a univariate function parametrized as a spline. 
-![Alt text](/assets/images/2024/24-05-05-KAN_files/moti.png)
+vLLM's multimodal input for OpenAI's Chat-Completion API works for image, audio and video.
+The support is not explicitly writing but following format work for all these inputs
+```python
+# It support directly image/audio/video URL, 
+messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "What's in this image?"
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": image_url
+                    },
+                },
+            ],
+        }],
+# Or use base64 encoded audio
+        {
+            "type": "audio_url",
+            "audio_url": {
+                # Any format supported by librosa is supported
+                "url": f"data:audio/ogg;base64,{audio_base64}"
+            },
+        },
 
-A **spline** is a function defined piecewise by polynomials. For example cubic spline is defined by 3rd order polynoimals in each segment $[t_{i-1}, t_i], i=1...n$
-![Alt text](/assets/images/2024/24-05-05-KAN_files/cubicspine.png)  
-In order to solve this equation with $4n$ parameters, we already have $3(n-1)$ equations shown above.   
-By constraining $S(x_i)=y_i, i=0...n$ gives another $n+1$ equations.  
-The last two constrains can have different options, and by setting $S(t_0)=S(t_n)=0$ gives you **natural cubic spline**
+```
+## 1 Supported API format
+The new format is using `input_audio` type instead of `audio_url`
+and it directly takes in base64 encoded audio.  
+```python
+        {
+            "type": "input_audio",
+            "input_audio": {
+                # Any format supported by librosa is supported
+                "data": audio_base64,
+                "format": "wav"
+            },
+        },
+```
 
+## 2 Code Changes
+Majority of the code changes are in `vllm/entrypoint/chat_utils.py`
+1. Add class `ChatCompletionContentPartInputAudioParam`
+  This class is derived from `TypedDict` and can be directly imported from [OpenAI](https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_content_part_input_audio_param.py) by `from openai.types.chat import ChatCompletionContentPartInputAudioParam`.
+2. The code logic is as following  
+```python
 
-## 1 Kolmogorov-Arnold Representation theorem
-**Vladimir Arnold** and **Andrey Kolmogorov** established that if $f$ is a multivariate continuous function on a bounded domain, then $f$ can be written as a finite composition of continuous functions of a single variable (univariate) and the binary operation of addition.
-![Alt text](/assets/images/2024/24-05-05-KAN_files/KAR.png)
+# Define partial functions, so when you call _AudioParse(part)
+# It will call: cast(ChatCompletionContentPartAudioParam, part)
+_AudioParser = partial(cast, ChatCompletionContentPartAudioParam)
+_InputAudioParser = partial(cast, ChatCompletionContentPartInputAudioParam)
 
-## 2 Kolmogorov-Arnold Network (KAN)
-![Alt text](/assets/images/2024/24-05-05-KAN_files/KAN.png)  
-With this generalization of $\Phi$, then KAN can be constructed simply by stacking layers!  
-$$KAN(X)=\Phi_{L-1}\circ...\circ\Phi_1\circ\Phi_0\circ X$$
+# Define a mapping from part types to their corresponding parsing functions.
+MM_PARSER_MAP: Dict[str,
+                    Callable[[ChatCompletionContentPartParam],
+                             Union[str, Dict[str,str]]]] = {
+    "audio_url":
+    lambda part: _AudioParser(part).get("audio_url", {}).get("url", ""),
+    "input_audio":
+    lambda part: _InputAudioParser(part).get("input_audio", {}),
+    ...
+}
 
-In constrast, a MLP is interleaved by linear layers $W$ and nonlinearities $\sigma$:
-$$MLP(X)=W_{L-1}\circ\sigma\circ...\circ W_1\circ\sigma\circ W_0\circ\sigma\circ X$$
+#From parse_chat_messages()
+#A loop over _parse_chat_message_content()
+#calls _parse_chat_message_content_parts()
+#A loop over _parse_chat_message_content_part()
+#calls _parse_chat_message_content_mm_part()
 
-## 3 Implementations
+content = MM_PARSER_MAP[part_type](part)
 
+if part.get("audio_url") is not None:
+    audio_params = cast(CustomChatCompletionContentSimpleAudioParam,
+                        part)
+    return "audio_url", audio_params.get("audio_url", "")
+if part.get("input_audio") is not None:
+    input_audio_params = cast(Dict[str, str], part)
+    return "input_audio", input_audio_params
+
+```
+
+## 3 Audio Parsing
+The multimodal parsing are all defined in `MultiModalContentParser` class. The core functin is `get_and_parse_audio` defined [here](https://github.com/vllm-project/vllm/blob/e8e6b6137c094bba6be3471122308e108fb08fac/vllm/multimodal/utils.py#L260). The new API is leveraging this function so we create a new URL following vLLM convention.    
+```python
+def parse_audio(self, audio_url: str) -> None:
+    audio = get_and_parse_audio(audio_url)
+
+    placeholder = self._tracker.add("audio", audio)
+    self._add_placeholder(placeholder)
+
+def parse_input_audio(self, input_audio: Dict[str, str]) -> None:
+    input_audio_data = input_audio.get("data","")
+    input_audio_format = input_audio.get("format","")
+    audio_url = f"data:audio/{input_audio_format};base64,{input_audio_data}"
+    audio = get_and_parse_audio(audio_url)
+
+    placeholder = self._tracker.add("audio", audio)
+    self._add_placeholder(placeholder)
+```
+
+## 4 Future Improvmentment
+By defining the `ChatCompletionContentPartInputAudioParam`, I was expected to use this class for type casting, instead of casting to `Dict[str, str]`. But the `mypy` check would fail because ambiguities in the class defination. 
+
+Basically following code can NOT pass `mypy` type check. It complains expect `classUnion` but get `classA`. 
+```python
+classUnion = Union[classA, classB]
+def funcTest() -> classUnion:
+  return classA
+```
