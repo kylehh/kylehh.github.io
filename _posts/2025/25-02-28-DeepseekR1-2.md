@@ -37,7 +37,7 @@ GPT-2 paper, Language Models are Unsupervised Multitask Learners. Use QA mode fo
 GPT-3 paper, Language Models are Few-Shot Learners, even zero shot can see improvement from scaling law.
 ![Alt text](/assets/images/2025/25-02-28-DeepseekR1-2_files/gpt-3.png)
 Google released their decoder only model, PaLM, with larger size. Similiar, Deepseek also incresae model sizes. Meta's OPT-175B has many failes. 
-![Alt text](/assets/images/2025/25-02-28-DeepseekR1-2_files/sizes.png)
+![Alt text](/assets/images/2025/25-02-28-DeepseekR1-2_files/sizes.png)  
 Instruct GPT paper, Training Language models to follow instructions with human feedback, critial RL during training: first SFT, then train a reward model, and RL through PPO.
 ![Alt text](/assets/images/2025/25-02-28-DeepseekR1-2_files/instruct.png)
 
