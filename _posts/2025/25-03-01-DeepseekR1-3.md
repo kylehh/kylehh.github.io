@@ -39,7 +39,7 @@ Next step, is training in RL step from [paper](https://arxiv.org/pdf/2412.14135)
 
 ## 2 Outcome Reward Model vs Process Reward Model
 ORM was outcome driven and PRM would check the reasoning step by step.  
-![Alt text](/assets/images/2025/25-03-01-DeepseekR1-3_files/ormprm.png)  
+![Alt text](/assets/images/2025/25-03-01-DeepseekR1-3_files/orm-prm.png)  
 Reward model used in RL, can also be call **verifier** in the post-training. There are multiple methods to get results from verifier
 ![Alt text](/assets/images/2025/25-03-01-DeepseekR1-3_files/verifier.png)
 
