@@ -42,11 +42,12 @@ The goal is to get weight only quantization for single-batch LLM performance. (W
 
 2. The paper **noticed** that scale up the salient weight and reduce the quantization error, which is a key contribution.
 Here is the induction:
-Similar to SmoothQuan, we can scale up weight and scale down the activation
+Similar to SmoothQuan, we can scale up weight and scale down the activation  
 $$
 Q(w*s)x/s=\Delta^\prime*Round(\frac{w*s}{{\Delta^\prime}}) \\
 \Delta^\prime=\frac{\max{(w*s)}}{2^{N-1}}
 $$
+
 Based on **empirical** findings, the error is propotional to $\frac{1}{s}$
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/empirical.png)
 and a test shows s=2 gives the best result while larger s would increase non-salient weight error
@@ -54,7 +55,8 @@ and a test shows s=2 gives the best result while larger s would increase non-sal
 
 3. The calculation of the scaling factor can NOT use SGD due to **round** functino is not differentiable. 
 A grid search is used here for a simplied factor $\alpha$
-The source code can be found [here](https://github.com/mit-han-lab/llm-awq/blob/52d3c26631bf62810bf4d4ab30e43d5b07818a38/awq/quantize/auto_scale.py#L124C1-L131C67)   
+The source code can be found [here](https://github.com/mit-han-lab/llm-awq/blob/52d3c26631bf62810bf4d4ab30e43d5b07818a38/awq/quantize/auto_scale.py#L124C1-L131C67)  
+
 ```python
  n_grid = 20
 history = []
@@ -65,6 +67,7 @@ for ratio in range(n_grid):
     scales = x_max.pow(ratio).clamp(min=1e-4).view(-1)
     scales = scales / (scales.max() * scales.min()).sqrt()
 ```
+
 You can see that the ratio $\alpha$ is searched between 0 and 1 with a step of 0.05.
 and another scaler is added 
 $s = \frac{s}{\sqrt{max(s)min(s)}}$
@@ -74,3 +77,6 @@ It's also shows as `INT3_group128` which means 128 channels shares a same scalin
 
 So here is the summary of the process
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/awq.png)
+
+## 3 GPTQ
+
