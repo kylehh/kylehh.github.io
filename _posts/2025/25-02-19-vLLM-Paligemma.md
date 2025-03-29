@@ -3,14 +3,14 @@ title: vLLM update - Paligemma
 mathjax: true
 toc: true
 categories:
-  - Study
+  - OSS
 tags:
   - LLM
 ---
 
 Notes of updating MM Processor for Paligemma model
-Initial [PR](https://github.com/vllm-project/vllm/pull/13584 paligemma) w PromptReplacement
-It works except for language feature is not working. After debugging, found out that HF processor always add \<bos\> at the very beginning for Paligemma 1, which should be removed. So worked on a new [PR](https://github.com/vllm-project/vllm/pull/14015) using PromptUpdate class.  
+Initial [PR](https://github.com/vllm-project/vllm/pull/13584) w `PromptReplacement` class.
+It worked except for language feature is not working. After debugging, found out that HF processor always add \<bos\> at the very beginning for Paligemma 1, which should be removed. So worked on a new [PR](https://github.com/vllm-project/vllm/pull/14015) using `PromptUpdate` class.  
 
 ## 0 vLLM local Install and test
 The Python-only build installation is
@@ -39,7 +39,7 @@ The pytest is under `vllm/tests/models/multimodal/processing/test_common.py` pat
 
 ## 2 HuggingFace Processor
 The logic is that it will call HF processor for the first time through this stack
-![Alt text](/assets/images/2025/25-02-19-vLLM-Paligemma_files/baseline.png)
+![Alt text](/assets/images/2025/25-02-19-vLLM-Paligemma_files/hf.png)
 
 ```
     def _cached_apply_hf_processor(
@@ -90,7 +90,8 @@ Notice `enable_hf_prompt_update` and `is_update_applied` both will be False
 
 ## 4 Apply Prompt Update
 Based on `is_update_applied`, the code will decide if apply `_apply_prompt_updates`.
-Always override `_get_prompt_updates`.For Paligemma, I have to override `apply` as well to add "\n" at the end of prompt.  
+Always override `_get_prompt_updates`.  
+For Paligemma, I have to override `apply` as well to add "\n" at the end of prompt.  
 ```
 class BaseMultiModeProcessor(ABC, Generic[_I]):
     def apply(...)
@@ -139,6 +140,6 @@ For both Peligemma 1 and 2, the final prompt format should be
 ```
 <image><image>...<image><image><bos><promtp_characters>\n
 ```
-Peligemma 1 has `add_bos_token` as True in tokenizer_config.html, so we can call `PromptReplacement`
+Peligemma 1 has `add_bos_token` as True in tokenizer_config.html, so we can call `PromptReplacement`  
 For Peligemma 2, `add_bos_token` is Falce, so we call `PromptInsertion` to add \<image\> tokens
 
