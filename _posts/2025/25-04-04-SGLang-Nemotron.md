@@ -8,7 +8,7 @@ tags:
   - LLM
 ---
 
-Migrated Llama3.3-Nemontron-Super-49B support from vLLM to SGLang and submitted [PR](https://github.com/sgl-project/sglang/pull/5073) for it
+Migrated `Llama3.3-Nemontron-Super-49B` support from vLLM to SGLang and submitted [PR](https://github.com/sgl-project/sglang/pull/5073) for it
 
 ## 0 Support in vLLM
 Deci team recently added Nemotron reasoning model support for the super 48B model. This model is based on `DeciLMForCausalLM` class. This is prunning from Llama 3.3 model which NAS(Network Architecture Search), so it is different from Nano version which is still LlamaCausal LM. 

@@ -1,5 +1,5 @@
 ---
-title: SmoothQuant and AWQ (,and GPTQ)
+title: SmoothQuant and AWQ
 mathjax: true
 toc: true
 categories:
@@ -28,13 +28,13 @@ The key challenge is that activation has larger dynamic range and hard to quanti
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/outliners.png)
 So instead of per-tensor quantization, we can consider per-token and per-channel quantization. 
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/pertoken.png)
-The outliners are mainly concentrated in certain **channels**. So we can shift them into weights
+The outliners are mainly concentrated in certain **channels**. So we can shift them into weights.  
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/channels.png)
 
 ## 2 AWQ
 This is 4-bit quantization also from Han's group, and here are Han's [talk](https://www.youtube.com/watch?v=3dYLj9vjfA0), [zhihu(really good explanations)](https://zhuanlan.zhihu.com/p/697761176), and [paper](https://arxiv.org/pdf/2306.00978)
 
-The goal is to get weight only quantization for single-batch LLM performance. (W8A8 only good for batch serving)
+The goal is to get weight only quantization for single-batch LLM performance. (W8A8 is only good for batch serving and not enough for single-query LLM inference)
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/w4a16.png)
 
 1. Only 1% of salient weight is important for the results. and the paper found out choosing the salient weight based on *weight* is similar to *random* choosing. So **Activation-aware** selection method is used. 
@@ -78,5 +78,4 @@ It's also shows as `INT3_group128` which means 128 channels shares a same scalin
 So here is the summary of the process
 ![Alt text](/assets/images/2025/25-03-18-Quantization_files/awq.png)
 
-## 3 GPTQ
 
