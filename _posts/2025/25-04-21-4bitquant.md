@@ -1,5 +1,5 @@
 ---
-title: 4Bit Quantization GPTQ and GGUF
+title: 4Bit Quantization GPTQ and GGUF and 1Bit LLM
 mathjax: true
 toc: true
 categories:
@@ -47,6 +47,19 @@ Pay attention that we are leaving **emergent features** out for quantization!
 ![Alt text](/assets/images/2025/25-04-21-4bitquant_files/gguf.png)
 
 
+## 5 1 Bit LLM 
+No joking, it's just 1 and -1 for the weight as 1 Bit LLM. It applies to all linear layers, namely **BitLinear**, and apply to INT8 activations.
+![Alt text](/assets/images/2025/25-04-21-4bitquant_files/1bit.png)
+The weights are actually stored in INT8, and changed to 1 or -1 using *signum function*
+![Alt text](/assets/images/2025/25-04-21-4bitquant_files/1bitweight.png)
+and activations are quantize to INT8 with traditional *absmax quantization*
+![Alt text](/assets/images/2025/25-04-21-4bitquant_files/1bitact.png)
+The tracked $\alpha$ nad $\beta$ are used to dequantize results back to FP16
+![Alt text](/assets/images/2025/25-04-21-4bitquant_files/1bitdeq.png)
+
+## 6 All LLM are 1.58 Bits
+[BitNet 1.58 Bit](https://arxiv.org/pdf/2402.17764) is adding status 0, making it ternary. The quantization is called *absmean function*
+![Alt text](/assets/images/2025/25-04-21-4bitquant_files/1.58bit.png)
 
 
 
