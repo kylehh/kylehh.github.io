@@ -20,3 +20,5 @@ The idea is to change auto-regression decoding into a nonliear equations system 
 ![Alt text](/assets/images/2024/24-10-24-Lookahead_files/jacobauto.png)
 
 ## 2 Lookahead decoding
+So we can solve all m tokens in k iterations with **parellel decoding**. If $k<<m$ then we can achieve speed up with lookahead decoding. The paper is [here](https://arxiv.org/pdf/2305.10427)
+![Alt text](/assets/images/2024/24-10-24-Lookahead_files/decodep.png)
