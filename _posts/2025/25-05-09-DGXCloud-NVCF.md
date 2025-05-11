@@ -9,7 +9,11 @@ tags:
 ---
 
 Recently all work seems K8S related and practices around k8s helped me onboard DGXCloud and NVCF Helm deployment really fast. 
-
+## 0 Web Server
+It's totally irrelavent but some information about web sever
+- WSGI: The old generation, for Web Sever Gateway Interface. It uses framework like **Flask** and **Djando**. and servers with names I never heard of.
+- ASGI: The new generation and A stands for Async. **FastAPI** is such framework and **uvicorn** is the webserver application. 
+  
 ## 1 DGXCloud
 1. Run:ai CLI and k8s setup following steps [here](https://docs.nvidia.com/dgx-cloud/run-ai/latest/advanced.html#setting-up-your-kubernetes-configuration-file)
 2. Then it's like a normal cluster operation with a specific namespace. 
