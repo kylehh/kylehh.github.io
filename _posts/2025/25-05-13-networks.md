@@ -1,5 +1,5 @@
 ---
-title: 4Bit Quantization GPTQ and GGUF and 1Bit LLM
+title: NVLink, InfiniBand and SpectrumX
 mathjax: true
 toc: true
 categories:

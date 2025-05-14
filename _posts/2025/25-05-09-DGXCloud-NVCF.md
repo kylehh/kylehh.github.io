@@ -26,33 +26,35 @@ NVCF can be considered as serverless k8s, and bring your own cluster approach wo
 1. Register cluster with NVCF.  
 I haven't tested out this step but worked with a registerd cluster
 2. Health Check implementation in code.   
-All is needed is a health check.  
-```sh
+All is needed is a health check. 
+
+```python
 app = FastAPI()
 class HealthCheck(BaseModel):
     status: str = "OK"
 
-@app.get("/health", 
-tags=["healthcheck"],
-summary="Perform a Health Check",
-response_description="Return HTTP Status Code 200 (OK)",
-status_code=status.HTTP_200_OK,
+@app.get("/health", tags=["healthcheck"],summary="Perform a Health Check", response_description="Return HTTP Status Code 200 (OK)", status_code=status.HTTP_200_OK,
 response_model=HealthCheck)
 def get_health() -> HealthCheck:
-    return HealthCheck(status="OK")
+    return HealthCheck(status="OK") 
+
 ```  
+
 2. Helm chart preparation  
 A service will be exposed in NVCF, and will have `/health` and `/generate` two endpoint implemented in the Pod behind it.  
+
 ```sh
 helm template chart/
 helm generate chart/
 # Will generate chart_name-version.tgz based on Chart.yaml
 ngc registry chart create ngc_org_id/chart_name --short-desc "chart des"
 ngc registry chart push ngc_org_id/chart_name:version --dry-run
-```
+```  
+
 3. NVCF Deployment  
 Set the **service** for exposing ports, and **endpoints** for health check and inference during function creations.  
+
 ```sh
 # Deploy to the on-prem cluster
 ngc cf fn deploy create function_id:version_id --targeted-deployment-specification "A100:ON-PREM.GPU.A100_8x:1:1:1:machinename-a100x8"
-```
+```  
