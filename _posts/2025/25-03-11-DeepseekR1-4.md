@@ -8,11 +8,11 @@ tags:
   - LLM
 ---
 
-Continue with Deepseek R1 from EZ Encoder. [Link](https://www.youtube.com/watch?v=JHrt8_YnmWA)
+Continue with Deepseek R1 from EZ Encoder. [Link](https://www.youtube.com/watch?v=-9HODvpVD2o)
 
 ## 0 Overview
 R1 overview. The great achievment of R1 is making many previous ideas really work in LLM
-![Alt text](/assets/images/2025/25-03-11-DeepseekR1-4_files/R1.png)
+![Alt text](/assets/images/2025/25-03-11-DeepseekR1-4_files/r1.png)
 
 ## 1 RL without SFT
 [Teaching Large Language Models to Reason with Reinforcement Learning](https://arxiv.org/abs/2403.04642) evaluate different RL methods for reasoning model, and tried RL without Reward Model, without SFT initialization. 
