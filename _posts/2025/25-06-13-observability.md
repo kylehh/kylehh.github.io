@@ -17,7 +17,7 @@ wget https://github.com/prometheus/prometheus/releases/download/v2.52.0/promethe
 tar -xvzf prometheus-2.52.0.linux-amd64.tar.gz
 cd prometheus-2.52.0.linux-amd64/
 ```
-2. Modify the config file `vi prometheus.yml`  
+2. Modify the config file `vi prometheus.yml`.
 ```sh
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -26,7 +26,7 @@ scrape_configs:
     # scheme defaults to 'http'.
     static_configs:
       - targets: ["localhost:8000"]
-```
+```  
 3. Start the service by `./prometheus --config.file=./prometheus.yml` and it will be available at `http://localhost:9090/targets?search=`
 
 ## 2 Grafana
@@ -35,8 +35,8 @@ scrape_configs:
 wget https://dl.grafana.com/oss/release/grafana-11.0.0.linux-amd64.tar.gz
 tar -zxvf grafana-11.0.0.linux-amd64.tar.gz
 ```
-2. Start the service and change password for the first time  
-```sh
+2. Start the service and change password for the first time.
+```sh  
 cd grafana-v11.0.0/
 ./bin/grafana-server
 
