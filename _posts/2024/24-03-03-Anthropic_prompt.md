@@ -25,7 +25,7 @@ Assistant:
 Human: **You are a highly experienced climate scientist.** Please explain the impact of greenhouse gasses.  
 ```
 Assistant:  
-## 4 Seperate data from instrcutions. With {{}} and XML tags  
+## 4 Seperate data from instrcutions. With \{\{\}\} and XML tags  
 ```
 Human: Hey Claude. <email>{{EMAIL}}<\email> Make this email more polite.
 

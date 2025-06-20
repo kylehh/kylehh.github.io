@@ -44,7 +44,7 @@ The goal is to get weight only quantization for single-batch LLM performance. (W
 Here is the induction:
 Similar to SmoothQuan, we can scale up weight and scale down the activation  
 $$
-Q(w*s)x/s=\Delta^\prime*Round(\frac{w*s}{{\Delta^\prime}}) \\
+Q(w*s)x/s=\Delta^\prime*Round(\frac{w*s}{\Delta^\prime})*x/s \\
 \Delta^\prime=\frac{\max{(w*s)}}{2^{N-1}}
 $$
 
