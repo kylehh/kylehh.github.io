@@ -18,7 +18,7 @@ RSS: false
 github_username: kylehh
 #twitter_username: huxpro
 #facebook_username:  huxpro
-#linkedin_username:  firstname-lastname-idxxxx
+linkedin_username:  khuang2022
 
 # Build settings
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
@@ -89,7 +89,7 @@ service-worker: true
 page-mathjax: false
 
 # Friends
-friends:
+friend:
   [
     { title: "Code Blog", href: "https://kylehh.github.io/code23/" },
   ]
