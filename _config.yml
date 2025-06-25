@@ -3,7 +3,7 @@ title: kYLe Blog
 author: Kyle H
 SEOTitle: kYLe的博客
 header-img: img/home-bg.jpg
-email: yellowsea@gmail.com
+email: kylhuang@nvidia.com
 description: "这里是 @Kyle 的个人博客 | 我想我是海"
 keyword: "AI LLM Coding"
 url: "https://kylehh.github.io" # your host, for absolute URL
@@ -92,5 +92,6 @@ page-mathjax: false
 # Friends
 friends:
   [
-    { title: "Code Blog", href: "https://kylehh.github.io/code23/" },
+    { title: "Tech Blog (2023-Now)", href: "https://kylehh.github.io/code23/" },
+    { title: "Wordpress Blog (2005-2009)", href: "https://haihuang.wordpress.com/" },
   ]
