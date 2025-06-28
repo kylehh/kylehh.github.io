@@ -1,2 +1,4 @@
-Copy template from [Hux's repo](https://github.com/Huxpro/huxpro.github.io/).
-Here is [Hux Blog](https://huangxuan.me)
+- Copy template from [Hux's repo](https://github.com/Huxpro/huxpro.github.io/).
+- Here is [Hux Blog](https://huangxuan.me)
+- Icon font [ZhiMangXing](https://fonts.google.com/specimen/Zhi+Mang+Xing) and generated from [here](https://favicon.io/favicon-generator/)
+- Local preview by `rake preview` 
