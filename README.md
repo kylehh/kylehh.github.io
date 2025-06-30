@@ -2,3 +2,4 @@
 - Here is [Hux Blog](https://huangxuan.me)
 - Icon font [ZhiMangXing](https://fonts.google.com/specimen/Zhi+Mang+Xing) and generated from [here](https://favicon.io/favicon-generator/)
 - Local preview by `rake preview` 
+- New post by `rake post title="A Title" subtitle="A sub title"`

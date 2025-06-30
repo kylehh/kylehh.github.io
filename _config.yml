@@ -93,5 +93,6 @@ page-mathjax: false
 friends:
   [
     { title: "Tech Blog (2023-Now)", href: "https://kylehh.github.io/code23/" },
+    { title: "WeChat朋友圈备份(隐藏)(2013-2025)", href: "https://kylehh.github.io/wechat/" },
     { title: "MSN Space备份 (2005-2009)", href: "https://kylehh.github.io/wordpress/" },
   ]
