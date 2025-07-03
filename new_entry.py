@@ -2,12 +2,12 @@ import argparse
 import os
 PREFIX="25-"
 SUFFIX=".md"
-IMG_PRE="assets/images/2025/"
+IMG_PRE="assets/2025/"
 IMG_SUF="_files/"
 
-### python new_entry.py -n 12-23-blog-title
+### python new_entry.py -n -i 12-23-blog-title
 ### will generate _posts/2024/24-12-23-blog-title.md
-### and a folder assets/images/2024/24-12-23-blog-title_files
+### and a folder assets/2024/24-12-23-blog-title_files
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
