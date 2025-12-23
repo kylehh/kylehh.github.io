@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "永恒的终结"
+title: "永恒的终结 - 阿西莫夫"
 subtitle: "The End of Eternity"
 #author: someone
 #date: 25-06-xx
