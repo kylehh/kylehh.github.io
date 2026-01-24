@@ -1,8 +1,8 @@
 import argparse
 import os
-PREFIX="25-"
+PREFIX="26-"
 SUFFIX=".md"
-IMG_PRE="assets/2025/"
+IMG_PRE="assets/2026/"
 IMG_SUF="_files/"
 
 ### python new_entry.py -n -i 12-23-blog-title
@@ -20,6 +20,6 @@ if __name__=="__main__":
     post_name = PREFIX + args.name + SUFFIX
     imgf_name = IMG_PRE + PREFIX + args.name + IMG_SUF
 
-    os.system(f"cp _posts/2025/25-06-20-1st.md _posts/2025/{post_name}")
+    os.system(f"cp _posts/2025/25-06-20-1st.md _posts/2026/{post_name}")
     if args.image:
         os.mkdir(imgf_name)
